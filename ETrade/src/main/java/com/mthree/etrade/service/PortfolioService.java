@@ -12,8 +12,7 @@ public interface PortfolioService {
     List<Portfolio> getAllPortfolios();
     List<Portfolio> getPortfoliosByUserId(Long userId);
     void deletePortfolioById(Long id);
-
     BigDecimal calculateTotalValue(Long portfolioId);
 
-    // TODO: implement performanceMetrics(int portfolioId)
+    // TODO: implement performanceMetrics(Long portfolioId) in stretch goal
 }

@@ -10,4 +10,3 @@ public interface StockPortfolioService {
     void removeStockFromPortfolio(Long id);
     List<StockPortfolio> getPortfolioByUserId(Long userId);
     double calculatePortfolioValue(Long userId);
-}
