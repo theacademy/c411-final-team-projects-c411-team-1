@@ -23,7 +23,7 @@ public class StockPortfolio {
     @Column(nullable = false)
     private int quantity;
 
-    @Column(name = "avg_buy_price", nullable = false, precision = 15, scale = 2)
+    @Column(name = "average_buy_price", nullable = false, precision = 15, scale = 2)
     private BigDecimal avgBuyPrice;
 
     @Column(name = "last_updated", nullable = false)
