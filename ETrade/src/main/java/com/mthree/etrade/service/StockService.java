@@ -14,7 +14,9 @@ public interface StockService {
 
     BigDecimal getCurrentPrice(String symbol);
 
-    Stock updateStock(String symbol, Stock stock);
+    void updateStock(Stock stock);
+
+    List<Stock> searchStockByName(String name, String exchange);
 
     List<BigDecimal> getStockHistory(String symbol, Date startDate, Date endDate);
 }
