@@ -1,15 +1,37 @@
-package com.etrade.model;
+package com.mthree.etrade.model;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
+@Entity
+@Table(name = "transactions")
 public class Transaction {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "transaction_id")
     private int transactionId;
+
+    @ManyToOne
+    @JoinColumn(name = "stock_symbol", nullable = false)
     private Stock stock;
+
+    @ManyToOne
+    @JoinColumn(name = "portfolio_id", nullable = false)
     private Portfolio portfolio;
+
+    @Column(name = "quantity", nullable = false)
     private int quantity;
+
+    @Column(name = "price", nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
+
+    @Column(name = "transaction_date", nullable = false)
     private LocalDateTime transactionDate;
+
+    @Column(name = "type", nullable = false, length = 5)
     private String type; // "BUY" or "SELL"
 
     // Constructors
@@ -89,10 +111,29 @@ public class Transaction {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Transaction that = (Transaction) o;
+        return transactionId == that.transactionId &&
+                quantity == that.quantity &&
+                Objects.equals(stock, that.stock) &&
+                Objects.equals(portfolio, that.portfolio) &&
+                Objects.equals(price, that.price) &&
+                Objects.equals(transactionDate, that.transactionDate) &&
+                Objects.equals(type, that.type);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(transactionId, stock, portfolio, quantity, price, transactionDate, type);
+    }
+
+    @Override
     public String toString() {
         return "Transaction{" +
                 "transactionId=" + transactionId +
-                ", stock=" + stock.getStockSymbol() +
+                ", stock=" + stock.getSymbol() +
                 ", portfolio=" + portfolio.getPortfolioId() +
                 ", quantity=" + quantity +
                 ", price=" + price +
