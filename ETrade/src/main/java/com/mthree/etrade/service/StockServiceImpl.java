@@ -101,6 +101,11 @@ public class StockServiceImpl implements StockService{
     }
 
     @Override
+    public void addStock(Stock stock) {
+        stockDao.save(stock);
+    }
+
+    @Override
     public List<BigDecimal> getStockHistory(String symbol, Date startDate, Date endDate) {
         return List.of();
     }
