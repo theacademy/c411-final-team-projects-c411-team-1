@@ -129,7 +129,7 @@ public class Portfolio {
     public String toString() {
         return "Portfolio{" +
                 "portfolioId=" + portfolioId +
-                ", user=" + (user != null ? user.getId() : null) +
+                //", user=" + (user != null ? user.getId() : null) +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", total=" + total +
