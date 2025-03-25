@@ -32,9 +32,32 @@ public class StockServiceImpl implements StockService{
     }
 
     @Override
-    public List<Stock> searchStockByName(String name, String exchange) {
+    public List<Stock> searchStockByNameExchange(String name, String exchange) {
         String searchStockUri = apiUri + "search?q=" + name + "&exchange=" +
                 exchange + "&token=" + apiKey;
+        RestTemplate restTemplate = new RestTemplate();
+        List<Stock> retrievedStocks = new ArrayList<>();
+
+        //gets hashmap response from api and creates a list of that hashmap results
+        HashMap<Object, Object> stockList = restTemplate.getForObject(searchStockUri, HashMap.class);
+        List<HashMap<String, String>> stockInfo = (List<HashMap<String, String>>) stockList.get("result");
+
+        //goes through list of resulting stock information and creates individual stock objects to return in list format
+        for(Object stockObject : stockInfo) {
+            HashMap<String, String> stockItem = (HashMap<String, String>) stockObject;
+            Stock stock = new Stock();
+            stock.setCompanyName(stockItem.get("description"));
+            stock.setSymbol(stockItem.get("symbol"));
+            retrievedStocks.add(stock);
+        }
+
+        return retrievedStocks;
+    }
+
+    @Override
+    public List<Stock> searchStockByName(String name) {
+        String searchStockUri = apiUri + "search?q=" + name +
+                "&token=" + apiKey;
         RestTemplate restTemplate = new RestTemplate();
         List<Stock> retrievedStocks = new ArrayList<>();
 
