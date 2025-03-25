@@ -1,56 +1,95 @@
 package com.mthree.etrade.model;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
+@Entity
 public class StockPortfolio {
-    private int portfolioId;
-    private int userId;
-    private BigDecimal totalValue;
-    private Map<String, Integer> stockHoldings = new HashMap<>();
 
-    public int getPortfolioId() {
-        return portfolioId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+
+    private String portfolioName;
+
+    private Double totalValue;
+
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<StockHolding> stockHoldings = new HashSet<>();
+
+    // Getters and Setters
+
+    public Long getId() {
+        return id;
     }
 
-    public void setPortfolioId(int portfolioId) {
-        this.portfolioId = portfolioId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public int getUserId() {
-        return userId;
+    public String getPortfolioName() {
+        return portfolioName;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setPortfolioName(String portfolioName) {
+        this.portfolioName = portfolioName;
     }
 
-    public BigDecimal getTotalValue() {
+    public Double getTotalValue() {
         return totalValue;
     }
 
-    public void setTotalValue(BigDecimal totalValue) {
+    public void setTotalValue(Double totalValue) {
         this.totalValue = totalValue;
     }
 
-    public Map<String, Integer> getStockHoldings() {
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Set<StockHolding> getStockHoldings() {
         return stockHoldings;
     }
 
-    public void setStockHoldings(Map<String, Integer> stockHoldings) {
+    public void setStockHoldings(Set<StockHolding> stockHoldings) {
         this.stockHoldings = stockHoldings;
     }
 
-    public void addStock(String ticker, int quantity) {
-        stockHoldings.put(ticker, stockHoldings.getOrDefault(ticker, 0) + quantity);
+    @Override
+    public String toString() {
+        return "StockPortfolio{" +
+                "id=" + id +
+                ", portfolioName='" + portfolioName + '\'' +
+                ", totalValue=" + totalValue +
+                ", user=" + user +
+                ", stockHoldings=" + stockHoldings +
+                '}';
     }
 
-    public void removeStock(String ticker, int quantity) {
-        if (stockHoldings.containsKey(ticker)) {
-            int updated = stockHoldings.get(ticker) - quantity;
-            if (updated <= 0) stockHoldings.remove(ticker);
-            else stockHoldings.put(ticker, updated);
-        }
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, portfolioName, totalValue, user, stockHoldings);
+
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof StockPortfolio)) return false;
+        StockPortfolio that = (StockPortfolio) o;
+        return Objects.equals(id, that.id) && Objects.equals(portfolioName, that.portfolioName) && Objects.equals(totalValue, that.totalValue) && Objects.equals(user, that.user) && Objects.equals(stockHoldings, that.stockHoldings);
     }
 }
+
+
