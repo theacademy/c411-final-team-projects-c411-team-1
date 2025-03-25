@@ -124,6 +124,22 @@ public class Portfolio {
         this.updatedAt = LocalDateTime.now();
     }
 
+    // Overrides
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Portfolio portfolio = (Portfolio) o;
+
+        return portfolioId != null && portfolioId.equals(portfolio.getPortfolioId());
+    }
+
+    @Override
+    public int hashCode() {
+        return portfolioId != null ? portfolioId.hashCode() : 0;
+    }
+
     // String representation for debugging/logging
     @Override
     public String toString() {
