@@ -1,6 +1,6 @@
 package com.mthree.etrade.service;
 
-import com.mthree.etrade.dao.PortfolioDAO;
+import com.mthree.etrade.dao.PortfolioDao;
 import com.mthree.etrade.model.Portfolio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,10 +11,10 @@ import java.util.List;
 @Service
 public class PortfolioServiceImpl implements PortfolioService {
 
-    private final PortfolioDAO portfolioDAO;
+    private final PortfolioDao portfolioDAO;
 
     @Autowired
-    public PortfolioServiceImpl(PortfolioDAO portfolioDAO) {
+    public PortfolioServiceImpl(PortfolioDao portfolioDAO) {
         this.portfolioDAO = portfolioDAO;
     }
 

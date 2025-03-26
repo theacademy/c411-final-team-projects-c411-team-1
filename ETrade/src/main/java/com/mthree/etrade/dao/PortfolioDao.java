@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface PortfolioDAO extends JpaRepository<Portfolio, Long> {
+public interface PortfolioDao extends JpaRepository<Portfolio, Long> {
     List<Portfolio> findByUserId(Long userId);
     Portfolio findByName(String name);
 
