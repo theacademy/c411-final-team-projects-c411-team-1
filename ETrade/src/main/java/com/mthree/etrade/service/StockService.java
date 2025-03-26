@@ -1,9 +1,10 @@
 package com.mthree.etrade.service;
 
 import com.mthree.etrade.model.Stock;
+import com.mthree.etrade.model.StockPrice;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface StockService {
@@ -18,9 +19,9 @@ public interface StockService {
 
     void addStock(Stock stock);
 
-    List<Stock> searchStockByNameExchange(String name, String exchange);
+    void deleteStock(String symbol);
 
-    List<Stock> searchStockByName(String name);
+    List<Stock> searchStock(String keyword);
 
-    List<BigDecimal> getStockHistory(String symbol, Date startDate, Date endDate);
+    List<StockPrice> getStockHistory(String symbol, LocalDate startDate, LocalDate endDate);
 }

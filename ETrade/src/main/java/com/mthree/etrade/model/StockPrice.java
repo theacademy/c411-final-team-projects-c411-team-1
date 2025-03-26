@@ -1,30 +1,32 @@
 package com.mthree.etrade.model;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class StockPrice {
 
-    private Date date;
-    private BigDecimal price;
+    private LocalDate date;
+    private BigDecimal close;
     private long volume;
-    private BigDecimal change;
+    private BigDecimal open;
+    private BigDecimal high;
+    private BigDecimal low;
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public BigDecimal getClose() {
+        return close;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setClose(BigDecimal close) {
+        this.close = close;
     }
 
     public long getVolume() {
@@ -35,33 +37,51 @@ public class StockPrice {
         this.volume = volume;
     }
 
-    public BigDecimal getChange() {
-        return change;
+    public BigDecimal getOpen() {
+        return open;
     }
 
-    public void setChange(BigDecimal change) {
-        this.change = change;
+    public void setOpen(BigDecimal open) {
+        this.open = open;
     }
 
-    @Override
-    public String toString() {
-        return "StockPrice{" +
-                "date=" + date +
-                ", price=" + price +
-                ", volume=" + volume +
-                ", change=" + change +
-                '}';
+    public BigDecimal getHigh() {
+        return high;
+    }
+
+    public void setHigh(BigDecimal high) {
+        this.high = high;
+    }
+
+    public BigDecimal getLow() {
+        return low;
+    }
+
+    public void setLow(BigDecimal low) {
+        this.low = low;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         StockPrice that = (StockPrice) o;
-        return volume == that.volume && Objects.equals(date, that.date) && Objects.equals(price, that.price) && Objects.equals(change, that.change);
+        return volume == that.volume && Objects.equals(date, that.date) && Objects.equals(close, that.close) && Objects.equals(open, that.open) && Objects.equals(high, that.high) && Objects.equals(low, that.low);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(date, price, volume, change);
+        return Objects.hash(date, close, volume, open, high, low);
+    }
+
+    @Override
+    public String toString() {
+        return "StockPrice{" +
+                "date=" + date +
+                ", close=" + close +
+                ", volume=" + volume +
+                ", open=" + open +
+                ", high=" + high +
+                ", low=" + low +
+                '}';
     }
 }
