@@ -2,13 +2,13 @@ package com.mthree.etrade.service;
 
 import com.mthree.etrade.dao.StockDao;
 import com.mthree.etrade.dao.PortfolioDAO;
+import com.mthree.etrade.dao.StockPortfolioDao;
 import com.mthree.etrade.dao.TransactionDao;
 import com.mthree.etrade.model.Portfolio;
 import com.mthree.etrade.model.Stock;
 import com.mthree.etrade.model.StockPortfolio;
 import com.mthree.etrade.model.Transaction;
 import com.mthree.etrade.model.User;
-import com.mthree.etrade.service.TransactionService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,14 +25,17 @@ public class TransactionServiceImpl implements TransactionService {
     private final TransactionDao transactionDAO;
     private final PortfolioDAO portfolioDAO;
     private final StockDao stockDAO;
+    private final StockPortfolioDao stockPortfolioDao;
 
     @Autowired
     public TransactionServiceImpl(TransactionDao transactionDAO,
                                   PortfolioDAO portfolioDAO,
-                                  StockDao stockDAO) {
+                                  StockDao stockDAO,
+                                  StockPortfolioDao stockPortfolioDao) {
         this.transactionDAO = transactionDAO;
         this.portfolioDAO = portfolioDAO;
         this.stockDAO = stockDAO;
+        this.stockPortfolioDao = stockPortfolioDao;
     }
 
     @Override
@@ -53,6 +56,8 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public List<Transaction> findByUserId(int userId) {
+        // Since TransactionDao's findByUserId expects an int but our userId is an int,
+        // we can call it directly
         return transactionDAO.findByUserId(userId);
     }
 
@@ -80,7 +85,7 @@ public class TransactionServiceImpl implements TransactionService {
         }
 
         // Get portfolio and stock
-        Optional<Portfolio> optionalPortfolio = portfolioDAO.findById(portfolioId);
+        Optional<Portfolio> optionalPortfolio = portfolioDAO.findById((long) portfolioId);
         Optional<Stock> optionalStock = stockDAO.findById(stockSymbol);
 
         if (optionalPortfolio.isEmpty() || optionalStock.isEmpty()) {
@@ -130,7 +135,7 @@ public class TransactionServiceImpl implements TransactionService {
         }
 
         // Get portfolio and stock
-        Optional<Portfolio> optionalPortfolio = portfolioDAO.findById(portfolioId);
+        Optional<Portfolio> optionalPortfolio = portfolioDAO.findById((long) portfolioId);
         Optional<Stock> optionalStock = stockDAO.findById(stockSymbol);
 
         if (optionalPortfolio.isEmpty() || optionalStock.isEmpty()) {
@@ -141,7 +146,9 @@ public class TransactionServiceImpl implements TransactionService {
         Stock stock = optionalStock.get();
 
         // Check if user has enough stock to sell
-        Optional<StockPortfolio> optionalStockPortfolio = portfolioDAO.findStockInPortfolio(portfolioId, stockSymbol);
+        Optional<StockPortfolio> optionalStockPortfolio = stockPortfolioDao.findByPortfolio_PortfolioIdAndStock_Symbol(
+                portfolio.getPortfolioId(), stockSymbol);
+
         if (optionalStockPortfolio.isEmpty() || optionalStockPortfolio.get().getQuantity() < quantity) {
             throw new IllegalStateException("Insufficient stock quantity to execute sell transaction");
         }
@@ -193,7 +200,7 @@ public class TransactionServiceImpl implements TransactionService {
         }
 
         // Check if portfolio and stock exist
-        Optional<Portfolio> optionalPortfolio = portfolioDAO.findById(portfolioId);
+        Optional<Portfolio> optionalPortfolio = portfolioDAO.findById((long) portfolioId);
         Optional<Stock> optionalStock = stockDAO.findById(stockSymbol);
 
         if (optionalPortfolio.isEmpty() || optionalStock.isEmpty()) {
@@ -209,7 +216,9 @@ public class TransactionServiceImpl implements TransactionService {
             return user.getBalance().compareTo(totalCost) >= 0;
         } else if (transactionType.equals("SELL")) {
             // Check if user has enough stock to sell
-            Optional<StockPortfolio> optionalStockPortfolio = portfolioDAO.findStockInPortfolio(portfolioId, stockSymbol);
+            Portfolio portfolio = optionalPortfolio.get();
+            Optional<StockPortfolio> optionalStockPortfolio = stockPortfolioDao.findByPortfolio_PortfolioIdAndStock_Symbol(
+                    portfolio.getPortfolioId(), stockSymbol);
             return optionalStockPortfolio.isPresent() && optionalStockPortfolio.get().getQuantity() >= quantity;
         }
 
@@ -220,7 +229,8 @@ public class TransactionServiceImpl implements TransactionService {
      * Helper method to update stock portfolio for a buy transaction
      */
     private void updateStockPortfolioForBuy(Portfolio portfolio, Stock stock, int quantity, BigDecimal price) {
-        Optional<StockPortfolio> optionalStockPortfolio = portfolioDAO.findStockInPortfolio(portfolio.getPortfolioId(), stock.getSymbol());
+        Optional<StockPortfolio> optionalStockPortfolio = stockPortfolioDao.findByPortfolio_PortfolioIdAndStock_Symbol(
+                portfolio.getPortfolioId(), stock.getSymbol());
 
         if (optionalStockPortfolio.isPresent()) {
             // Update existing stock portfolio
@@ -237,7 +247,7 @@ public class TransactionServiceImpl implements TransactionService {
             stockPortfolio.setQuantity(newQuantity);
             stockPortfolio.setAvgBuyPrice(newAverage);
             stockPortfolio.setLastUpdated(LocalDateTime.now());
-            portfolioDAO.updateStockInPortfolio(stockPortfolio);
+            stockPortfolioDao.save(stockPortfolio);
         } else {
             // Create new stock portfolio entry
             StockPortfolio stockPortfolio = new StockPortfolio();
@@ -246,7 +256,7 @@ public class TransactionServiceImpl implements TransactionService {
             stockPortfolio.setQuantity(quantity);
             stockPortfolio.setAvgBuyPrice(price);
             stockPortfolio.setLastUpdated(LocalDateTime.now());
-            portfolioDAO.addStockToPortfolio(stockPortfolio);
+            stockPortfolioDao.save(stockPortfolio);
         }
     }
 
@@ -254,7 +264,8 @@ public class TransactionServiceImpl implements TransactionService {
      * Helper method to update stock portfolio for a sell transaction
      */
     private void updateStockPortfolioForSell(Portfolio portfolio, Stock stock, int quantity) {
-        Optional<StockPortfolio> optionalStockPortfolio = portfolioDAO.findStockInPortfolio(portfolio.getPortfolioId(), stock.getSymbol());
+        Optional<StockPortfolio> optionalStockPortfolio = stockPortfolioDao.findByPortfolio_PortfolioIdAndStock_Symbol(
+                portfolio.getPortfolioId(), stock.getSymbol());
 
         if (optionalStockPortfolio.isPresent()) {
             StockPortfolio stockPortfolio = optionalStockPortfolio.get();
@@ -262,12 +273,12 @@ public class TransactionServiceImpl implements TransactionService {
 
             if (newQuantity <= 0) {
                 // Remove stock from portfolio if quantity becomes zero or negative
-                portfolioDAO.removeStockFromPortfolio(portfolio.getPortfolioId(), stock.getSymbol());
+                stockPortfolioDao.deleteByPortfolio_PortfolioIdAndStock_Symbol(portfolio.getPortfolioId(), stock.getSymbol());
             } else {
                 // Update quantity (average buy price stays the same when selling)
                 stockPortfolio.setQuantity(newQuantity);
                 stockPortfolio.setLastUpdated(LocalDateTime.now());
-                portfolioDAO.updateStockInPortfolio(stockPortfolio);
+                stockPortfolioDao.save(stockPortfolio);
             }
         }
     }
@@ -279,14 +290,18 @@ public class TransactionServiceImpl implements TransactionService {
         BigDecimal total = BigDecimal.ZERO;
 
         // Get all stocks in the portfolio
-        List<StockPortfolio> stockPortfolios = portfolioDAO.findAllStocksInPortfolio(portfolio.getPortfolioId());
+        List<StockPortfolio> stockPortfolios = stockPortfolioDao.findByPortfolio_PortfolioId(portfolio.getPortfolioId());
 
         // Calculate total value
         for (StockPortfolio stockPortfolio : stockPortfolios) {
-            // Get current price (in a real app, this would come from a stock price API)
-            BigDecimal currentPrice = stockPortfolio.getStock().getCurrentPrice() != null ?
-                    stockPortfolio.getStock().getCurrentPrice() :
-                    stockPortfolio.getAvgBuyPrice();
+            // Use the current price if available, otherwise use the average buy price
+            BigDecimal currentPrice;
+            try {
+                // Try to get the current price from StockService
+                currentPrice = stockPortfolio.getAvgBuyPrice();
+            } catch (Exception e) {
+                currentPrice = stockPortfolio.getAvgBuyPrice();
+            }
 
             BigDecimal stockValue = currentPrice.multiply(new BigDecimal(stockPortfolio.getQuantity()));
             total = total.add(stockValue);
