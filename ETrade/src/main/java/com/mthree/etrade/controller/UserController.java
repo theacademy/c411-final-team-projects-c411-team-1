@@ -34,7 +34,7 @@ public class UserController {
         return new ResponseEntity<>(userService.saveUser(user), HttpStatus.CREATED);
     }
 
-    //added comments 
+    //added comments
 
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
@@ -57,6 +57,17 @@ public class UserController {
         Optional<User> user = userService.findByEmail(email);
         return user.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
+    @GetMapping("/exists/{email}")
+    public ResponseEntity<Boolean> checkUserExists(@PathVariable String email) {
+        return ResponseEntity.ok(userService.existsByEmail(email));
+    }
+
+    @PutMapping("/{id}/update-balance")
+    public ResponseEntity<Void> updateBalance(@PathVariable Long id, @RequestParam BigDecimal amount) {
+        userService.updateBalance(id, amount);
+        return ResponseEntity.ok().build();
     }
 
 }
