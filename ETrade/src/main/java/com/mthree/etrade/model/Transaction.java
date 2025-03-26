@@ -38,6 +38,16 @@ public class Transaction {
     public Transaction() {
     }
 
+    public Transaction(Stock stock, Portfolio portfolio, int quantity,
+                       BigDecimal price, LocalDateTime date, String transactionType) {
+        this.stock = stock;
+        this.portfolio = portfolio;
+        this.quantity = quantity;
+        this.price = price;
+        this.date = date;
+        this.transactionType = transactionType;
+    }
+
     // Getters and Setters
     public int getId() {
         return id;
@@ -93,6 +103,11 @@ public class Transaction {
 
     public void setTransactionType(String transactionType) {
         this.transactionType = transactionType;
+    }
+
+    // Utility methods
+    public BigDecimal getTotalAmount() {
+        return price.multiply(new BigDecimal(quantity));
     }
 
     @Override
