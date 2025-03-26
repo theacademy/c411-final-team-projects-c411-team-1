@@ -38,7 +38,7 @@ public interface TransactionDao extends JpaRepository<Transaction, Integer> {
     /**
      * Find transactions by user ID (custom query)
      */
-    @Query("SELECT t FROM Transaction t WHERE t.portfolio.portfolioOwner.id = :userId")
+    @Query("SELECT t FROM Transaction t WHERE t.portfolio.user.id = :userId")
     List<Transaction> findByUserId(@Param("userId") int userId);
 
     /**

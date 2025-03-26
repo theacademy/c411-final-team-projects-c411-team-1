@@ -1,13 +1,14 @@
 package com.mthree.etrade.service;
 
 import com.mthree.etrade.dao.StockDao;
-import com.mthree.etrade.dao.PortfolioDao;
+import com.mthree.etrade.dao.PortfolioDAO;
 import com.mthree.etrade.dao.TransactionDao;
 import com.mthree.etrade.model.Portfolio;
 import com.mthree.etrade.model.Stock;
 import com.mthree.etrade.model.StockPortfolio;
 import com.mthree.etrade.model.Transaction;
 import com.mthree.etrade.model.User;
+import com.mthree.etrade.service.TransactionService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,12 +23,12 @@ import java.util.Optional;
 public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionDao transactionDAO;
-    private final PortfolioDao portfolioDAO;
+    private final PortfolioDAO portfolioDAO;
     private final StockDao stockDAO;
 
     @Autowired
     public TransactionServiceImpl(TransactionDao transactionDAO,
-                                  PortfolioDao portfolioDAO,
+                                  PortfolioDAO portfolioDAO,
                                   StockDao stockDAO) {
         this.transactionDAO = transactionDAO;
         this.portfolioDAO = portfolioDAO;
