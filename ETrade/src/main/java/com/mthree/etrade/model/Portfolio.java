@@ -41,7 +41,6 @@ public class Portfolio {
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<StockPortfolio> stockPortfolios;
 
-    // Constructors
     public Portfolio() {}
 
     public Portfolio(User user, String name, String description, BigDecimal total) {
@@ -53,7 +52,6 @@ public class Portfolio {
         this.updatedAt = LocalDateTime.now();
     }
 
-    // Getters & Setters
     public Long getPortfolioId() {
         return portfolioId;
     }
@@ -124,7 +122,6 @@ public class Portfolio {
         this.updatedAt = LocalDateTime.now();
     }
 
-    // Overrides
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -140,7 +137,6 @@ public class Portfolio {
         return portfolioId != null ? portfolioId.hashCode() : 0;
     }
 
-    // String representation for debugging/logging
     @Override
     public String toString() {
         return "Portfolio{" +
