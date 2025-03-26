@@ -268,7 +268,7 @@ public class TransactionServiceImpl implements TransactionService {
 
             if (newQuantity <= 0) {
                 // Remove stock from portfolio if quantity becomes zero or negative
-                stockPortfolioDAO.findById_PortfolioIdAndId_StockSymbol(portfolio.getPortfolioId(), stock.getSymbol());
+                stockPortfolioDAO.deleteById_PortfolioIdAndId_StockSymbol(portfolio.getPortfolioId(), stock.getSymbol());
             } else {
                 // Update quantity (average buy price stays the same when selling)
                 stockPortfolio.setQuantity(newQuantity);
