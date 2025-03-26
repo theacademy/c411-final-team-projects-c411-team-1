@@ -23,6 +23,7 @@ public class User {
     @Column(nullable = false, precision = 15, scale = 2)
     private BigDecimal balance;
 
+    //Getters and Setters
     public Long getId() {
         return id;
     }
@@ -63,6 +64,8 @@ public class User {
         this.balance = balance;
     }
 
+   //Returns a string representation of the User object.
+   //Useful for logging and debugging
     @Override
     public String toString() {
         return "User{" +
@@ -74,6 +77,8 @@ public class User {
                 '}';
     }
 
+    //Checks if two User objects are equal based on their attributes
+    //Helps in avoiding duplicate user entries and ensuring data consistency
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -84,6 +89,9 @@ public class User {
                 Objects.equals(password, user.password) &&
                 Objects.equals(balance, user.balance);
     }
+
+    //Generates a hash code for the User object.
+    //Used in collections like HashMap or HashSet.
 
     @Override
     public int hashCode() {
