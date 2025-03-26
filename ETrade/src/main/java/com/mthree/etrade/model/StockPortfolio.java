@@ -5,17 +5,16 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
+@IdClass(StockPortfolioId.class)
 @Table(name = "stock_portfolio")
 public class StockPortfolio {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "portfolio_id", nullable = false)
     private Portfolio portfolio;
 
+    @Id
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "stock_symbol", nullable = false)
     private Stock stock;
@@ -47,15 +46,6 @@ public class StockPortfolio {
     }
 
     // Getters and Setters
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Portfolio getPortfolio() {
         return portfolio;
     }
@@ -99,9 +89,8 @@ public class StockPortfolio {
     @Override
     public String toString() {
         return "StockPortfolio{" +
-                "id=" + id +
-                ", portfolio=" + (portfolio != null ? portfolio.getPortfolioId() : null) +
-                ", stock=" + (stock != null ? stock.getSymbol() : null) +
+                "portfolioId=" + (portfolio != null ? portfolio.getPortfolioId() : null) +
+                ", stockSymbol=" + (stock != null ? stock.getSymbol() : null) +
                 ", quantity=" + quantity +
                 ", avgBuyPrice=" + avgBuyPrice +
                 ", lastUpdated=" + lastUpdated +
