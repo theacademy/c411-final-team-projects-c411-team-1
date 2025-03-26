@@ -5,6 +5,11 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+/*
+ * Service interface for managing users
+ * Defines the business logic operations related to User management
+ */
+
 public interface UserService {
     User saveUser(User user);
     User getUserById(Long id);
@@ -15,5 +20,6 @@ public interface UserService {
     boolean existsByEmail(String email);
 
     // Additional method for updating user balance
+    // Updates a user's balance, typically for stock transactions.
     void updateBalance(Long userId, BigDecimal amount);
 }
