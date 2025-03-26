@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -17,28 +16,6 @@ public class StockPortfolioController {
     @Autowired
     private StockPortfolioService stockPortfolioService;
 
-    @GetMapping
-    public ResponseEntity<List<StockPortfolio>> getAllStockPortfolios() {
-        return ResponseEntity.ok(stockPortfolioService.getAllStockPortfolios());
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<StockPortfolio> getStockPortfolioById(@PathVariable Long id) {
-        StockPortfolio sp = stockPortfolioService.getStockPortfolioById(id);
-        return ResponseEntity.ok(sp);
-    }
-
-    @GetMapping("/portfolio/{portfolioId}")
-    public ResponseEntity<List<StockPortfolio>> getByPortfolio(@PathVariable Long portfolioId) {
-        return ResponseEntity.ok(stockPortfolioService.getByPortfolioId(portfolioId));
-    }
-
-    @GetMapping("/portfolio/{portfolioId}/value")
-    public ResponseEntity<BigDecimal> getTotalValueByPortfolio(@PathVariable Long portfolioId) {
-        BigDecimal value = stockPortfolioService.calculatePortfolioValue(portfolioId);
-        return ResponseEntity.ok(value);
-    }
-
     @PostMapping
     public ResponseEntity<StockPortfolio> addStockToPortfolio(@RequestBody StockPortfolio stockPortfolio) {
         StockPortfolio created = stockPortfolioService.addStockToPortfolio(stockPortfolio);
@@ -46,20 +23,46 @@ public class StockPortfolioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StockPortfolio> updateStockPortfolio(@PathVariable Long id, @RequestBody StockPortfolio updated) {
-        StockPortfolio result = stockPortfolioService.updateStockPortfolio(id, updated);
-        return ResponseEntity.ok(result);
+    public ResponseEntity<StockPortfolio> updateStockInPortfolio(@PathVariable Long id, @RequestBody StockPortfolio stockPortfolio) {
+        StockPortfolio updated = stockPortfolioService.updateStockInPortfolio(id, stockPortfolio);
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteStockPortfolio(@PathVariable Long id) {
-        stockPortfolioService.deleteStockPortfolio(id);
+    public ResponseEntity<Void> removeStockFromPortfolio(@PathVariable Long id) {
+        stockPortfolioService.removeStockFromPortfolio(id);
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/portfolio/{portfolioId}/stock/{stockSymbol}")
-    public ResponseEntity<Void> removeStockFromPortfolio(@PathVariable Long portfolioId, @PathVariable String stockSymbol) {
-        stockPortfolioService.removeStockFromPortfolio(portfolioId, stockSymbol);
-        return ResponseEntity.noContent().build();
+    @GetMapping("/{id}")
+    public ResponseEntity<StockPortfolio> getStockPortfolioById(@PathVariable Long id) {
+        return ResponseEntity.ok(stockPortfolioService.getStockPortfolioById(id));
+    }
+
+    @GetMapping("/portfolio/{portfolioId}")
+    public ResponseEntity<List<StockPortfolio>> getStocksByPortfolioId(@PathVariable Long portfolioId) {
+        return ResponseEntity.ok(stockPortfolioService.getStocksByPortfolioId(portfolioId));
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<StockPortfolio>> getPortfolioByUserId(@PathVariable Long userId) {
+        return ResponseEntity.ok(stockPortfolioService.getPortfolioByUserId(userId));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<StockPortfolio>> getAllStockPortfolios() {
+        return ResponseEntity.ok(stockPortfolioService.getAllStockPortfolios());
+    }
+
+    @GetMapping("/value/user/{userId}")
+    public ResponseEntity<Double> calculatePortfolioValue(@PathVariable Long userId) {
+        return ResponseEntity.ok(stockPortfolioService.calculatePortfolioValue(userId));
+    }
+
+    @GetMapping("/exists")
+    public ResponseEntity<Boolean> existsByPortfolioAndStock(
+            @RequestParam Long portfolioId,
+            @RequestParam String stockSymbol) {
+        return ResponseEntity.ok(stockPortfolioService.existsByPortfolioAndStock(portfolioId, stockSymbol));
     }
 }
