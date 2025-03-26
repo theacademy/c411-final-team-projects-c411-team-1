@@ -1,5 +1,6 @@
 package com.mthree.etrade.service.impl;
 
+import com.mthree.etrade.dao.StockDao;
 import com.mthree.etrade.dao.TransactionDAO;
 import com.mthree.etrade.dao.PortfolioDAO;
 import com.mthree.etrade.dao.StockDAO;
@@ -24,12 +25,12 @@ public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionDAO transactionDAO;
     private final PortfolioDAO portfolioDAO;
-    private final StockDAO stockDAO;
+    private final StockDao stockDAO;
 
     @Autowired
     public TransactionServiceImpl(TransactionDAO transactionDAO,
                                   PortfolioDAO portfolioDAO,
-                                  StockDAO stockDAO) {
+                                  StockDao stockDAO) {
         this.transactionDAO = transactionDAO;
         this.portfolioDAO = portfolioDAO;
         this.stockDAO = stockDAO;
@@ -228,14 +229,14 @@ public class TransactionServiceImpl implements TransactionService {
             int newQuantity = stockPortfolio.getQuantity() + quantity;
 
             // Calculate new average buy price
-            BigDecimal currentValue = stockPortfolio.getAverageBuyPrice()
+            BigDecimal currentValue = stockPortfolio.getAvgBuyPrice()
                     .multiply(new BigDecimal(stockPortfolio.getQuantity()));
             BigDecimal newValue = price.multiply(new BigDecimal(quantity));
             BigDecimal totalValue = currentValue.add(newValue);
             BigDecimal newAverage = totalValue.divide(new BigDecimal(newQuantity), 2, BigDecimal.ROUND_HALF_UP);
 
             stockPortfolio.setQuantity(newQuantity);
-            stockPortfolio.setAverageBuyPrice(newAverage);
+            stockPortfolio.setAvgBuyPrice(newAverage);
             stockPortfolio.setLastUpdated(LocalDateTime.now());
             portfolioDAO.updateStockInPortfolio(stockPortfolio);
         } else {
@@ -244,7 +245,7 @@ public class TransactionServiceImpl implements TransactionService {
             stockPortfolio.setPortfolio(portfolio);
             stockPortfolio.setStock(stock);
             stockPortfolio.setQuantity(quantity);
-            stockPortfolio.setAverageBuyPrice(price);
+            stockPortfolio.setAvgBuyPrice(price);
             stockPortfolio.setLastUpdated(LocalDateTime.now());
             portfolioDAO.addStockToPortfolio(stockPortfolio);
         }
@@ -286,7 +287,7 @@ public class TransactionServiceImpl implements TransactionService {
             // Get current price (in a real app, this would come from a stock price API)
             BigDecimal currentPrice = stockPortfolio.getStock().getCurrentPrice() != null ?
                     stockPortfolio.getStock().getCurrentPrice() :
-                    stockPortfolio.getAverageBuyPrice();
+                    stockPortfolio.getAvgBuyPrice();
 
             BigDecimal stockValue = currentPrice.multiply(new BigDecimal(stockPortfolio.getQuantity()));
             total = total.add(stockValue);
