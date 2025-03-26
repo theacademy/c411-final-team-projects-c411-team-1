@@ -1,9 +1,8 @@
-package com.mthree.etrade.service.impl;
+package com.mthree.etrade.service;
 
 import com.mthree.etrade.dao.StockDao;
-import com.mthree.etrade.dao.TransactionDAO;
 import com.mthree.etrade.dao.PortfolioDAO;
-import com.mthree.etrade.dao.StockDAO;
+import com.mthree.etrade.dao.TransactionDao;
 import com.mthree.etrade.model.Portfolio;
 import com.mthree.etrade.model.Stock;
 import com.mthree.etrade.model.StockPortfolio;
@@ -23,12 +22,12 @@ import java.util.Optional;
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
-    private final TransactionDAO transactionDAO;
+    private final TransactionDao transactionDAO;
     private final PortfolioDAO portfolioDAO;
     private final StockDao stockDAO;
 
     @Autowired
-    public TransactionServiceImpl(TransactionDAO transactionDAO,
+    public TransactionServiceImpl(TransactionDao transactionDAO,
                                   PortfolioDAO portfolioDAO,
                                   StockDao stockDAO) {
         this.transactionDAO = transactionDAO;
@@ -95,7 +94,7 @@ public class TransactionServiceImpl implements TransactionService {
         BigDecimal totalCost = price.multiply(new BigDecimal(quantity));
 
         // Check if user has enough balance
-        User user = portfolio.getPortfolioOwner();
+        User user = portfolio.getUser();
         if (user.getBalance().compareTo(totalCost) < 0) {
             throw new IllegalStateException("Insufficient balance to execute buy transaction");
         }
@@ -160,7 +159,7 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setTransactionType("SELL");
 
         // Update user balance
-        User user = portfolio.getPortfolioOwner();
+        User user = portfolio.getUser();
         user.setBalance(user.getBalance().add(totalAmount));
 
         // Update stock portfolio
@@ -205,7 +204,7 @@ public class TransactionServiceImpl implements TransactionService {
         if (transactionType.equals("BUY")) {
             // Check if user has enough balance
             Portfolio portfolio = optionalPortfolio.get();
-            User user = portfolio.getPortfolioOwner();
+            User user = portfolio.getUser();
             BigDecimal totalCost = price.multiply(new BigDecimal(quantity));
             return user.getBalance().compareTo(totalCost) >= 0;
         } else if (transactionType.equals("SELL")) {
@@ -294,7 +293,7 @@ public class TransactionServiceImpl implements TransactionService {
         }
 
         // Update portfolio
-        portfolio.setTotalValue(total);
+        portfolio.setTotal(total);
         portfolio.setUpdatedAt(LocalDateTime.now());
         portfolioDAO.save(portfolio);
     }
