@@ -42,7 +42,7 @@ public class TransactionController {
      * Get transaction by ID
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Transaction> getTransactionById(@PathVariable int id) {
+    public ResponseEntity<Transaction> getTransactionById(@PathVariable Long id) {
         Transaction transaction = transactionService.findById(id);
         if (transaction == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -54,7 +54,7 @@ public class TransactionController {
      * Get transactions by portfolio ID
      */
     @GetMapping("/portfolio/{portfolioId}")
-    public ResponseEntity<List<Transaction>> getTransactionsByPortfolioId(@PathVariable int portfolioId) {
+    public ResponseEntity<List<Transaction>> getTransactionsByPortfolioId(@PathVariable Long portfolioId) {
         List<Transaction> transactions = transactionService.findByPortfolioId(portfolioId);
         return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
@@ -63,7 +63,7 @@ public class TransactionController {
      * Get transactions by user ID
      */
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Transaction>> getTransactionsByUserId(@PathVariable int userId) {
+    public ResponseEntity<List<Transaction>> getTransactionsByUserId(@PathVariable Long userId) {
         List<Transaction> transactions = transactionService.findByUserId(userId);
         return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
@@ -149,7 +149,7 @@ public class TransactionController {
      * Delete a transaction (admin only in a real app)
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTransaction(@PathVariable int id) {
+    public ResponseEntity<Void> deleteTransaction(@PathVariable Long id) {
         try {
             transactionService.deleteTransaction(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -162,14 +162,14 @@ public class TransactionController {
      * Request class for buying stocks
      */
     public static class BuyTransactionRequest {
-        private int portfolioId;
+        private Long portfolioId;
         private String stockSymbol;
         private int quantity;
         private BigDecimal price;
 
         // Getters and setters
-        public int getPortfolioId() { return portfolioId; }
-        public void setPortfolioId(int portfolioId) { this.portfolioId = portfolioId; }
+        public Long getPortfolioId() { return portfolioId; }
+        public void setPortfolioId(Long portfolioId) { this.portfolioId = portfolioId; }
 
         public String getStockSymbol() { return stockSymbol; }
         public void setStockSymbol(String stockSymbol) { this.stockSymbol = stockSymbol; }
@@ -185,14 +185,14 @@ public class TransactionController {
      * Request class for selling stocks
      */
     public static class SellTransactionRequest {
-        private int portfolioId;
+        private Long portfolioId;
         private String stockSymbol;
         private int quantity;
         private BigDecimal price;
 
         // Getters and setters
-        public int getPortfolioId() { return portfolioId; }
-        public void setPortfolioId(int portfolioId) { this.portfolioId = portfolioId; }
+        public Long getPortfolioId() { return portfolioId; }
+        public void setPortfolioId(Long portfolioId) { this.portfolioId = portfolioId; }
 
         public String getStockSymbol() { return stockSymbol; }
         public void setStockSymbol(String stockSymbol) { this.stockSymbol = stockSymbol; }

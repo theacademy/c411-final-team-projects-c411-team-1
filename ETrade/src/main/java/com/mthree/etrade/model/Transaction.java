@@ -12,7 +12,7 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "transaction_id")
-    private int id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "stock_symbol", nullable = false)
@@ -49,11 +49,11 @@ public class Transaction {
     }
 
     // Getters and Setters
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -115,8 +115,8 @@ public class Transaction {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Transaction that = (Transaction) o;
-        return id == that.id &&
-                quantity == that.quantity &&
+        return quantity == that.quantity &&
+                Objects.equals(id, that.id) &&
                 Objects.equals(stock, that.stock) &&
                 Objects.equals(portfolio, that.portfolio) &&
                 Objects.equals(price, that.price) &&

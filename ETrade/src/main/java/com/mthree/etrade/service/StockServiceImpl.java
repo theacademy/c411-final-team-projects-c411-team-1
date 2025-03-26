@@ -102,7 +102,9 @@ public class StockServiceImpl implements StockService{
 
         for(String d : dates) {
             LocalDate currentDate = LocalDate.parse(d);
-            if(currentDate.isBefore(endDate) && currentDate.isAfter(startDate)) {
+            // FIXED: Updated the comparison to correctly include both startDate and endDate
+            // Using compareTo() >= 0 and <= 0 instead of isAfter/isBefore which are exclusive
+            if(currentDate.compareTo(startDate) >= 0 && currentDate.compareTo(endDate) <= 0) {
                 HashMap<String, String> stockDate = timeSeries.get(d);
                 StockPrice stockPrice = new StockPrice();
                 stockPrice.setDate(currentDate);
@@ -114,7 +116,6 @@ public class StockServiceImpl implements StockService{
                 stockHistory.add(stockPrice);
             }
         }
-
 
         return stockHistory;
     }

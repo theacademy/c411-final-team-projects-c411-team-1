@@ -15,9 +15,10 @@ import java.util.Optional;
 public interface PortfolioDAO extends JpaRepository<Portfolio, Long> {
     List<Portfolio> findByUserId(Long userId);
     Portfolio findByName(String name);
-    //Total Value Query, based on quantity * avg buy price
-    @Query("SELECT SUM(sp.quantity * sp.averageBuyPrice) FROM StockPortfolio sp WHERE sp.portfolio.portfolioId = :portfolioId")
+
+    // Total Value Query, fixed field name to match StockPortfolio model
+    @Query("SELECT SUM(sp.quantity * sp.avgBuyPrice) FROM StockPortfolio sp WHERE sp.portfolio.portfolioId = :portfolioId")
     BigDecimal getPortfolioTotalValue(@Param("portfolioId") Long portfolioId);
 
-    Optional<StockPortfolio> findStockInPortfolio(int portfolioId, String stockSymbol);
+    // Removed redundant methods that should be in StockPortfolioDao
 }

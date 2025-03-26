@@ -15,7 +15,7 @@ public interface TransactionService {
      * @param id The transaction ID
      * @return The transaction if found
      */
-    Transaction findById(int id);
+    Transaction findById(Long id);
 
     /**
      * Get all transactions
@@ -28,14 +28,14 @@ public interface TransactionService {
      * @param portfolioId The portfolio ID
      * @return List of transactions for the portfolio
      */
-    List<Transaction> findByPortfolioId(int portfolioId);
+    List<Transaction> findByPortfolioId(Long portfolioId);
 
     /**
      * Get transactions for a specific user
      * @param userId The user ID
      * @return List of transactions for the user
      */
-    List<Transaction> findByUserId(int userId);
+    List<Transaction> findByUserId(Long userId);
 
     /**
      * Get transactions for a specific stock
@@ -67,7 +67,7 @@ public interface TransactionService {
      * @param price The price per share
      * @return The created transaction
      */
-    Transaction executeBuyTransaction(int portfolioId, String stockSymbol, int quantity, BigDecimal price);
+    Transaction executeBuyTransaction(Long portfolioId, String stockSymbol, int quantity, BigDecimal price);
 
     /**
      * Execute a sell transaction
@@ -77,7 +77,7 @@ public interface TransactionService {
      * @param price The price per share
      * @return The created transaction
      */
-    Transaction executeSellTransaction(int portfolioId, String stockSymbol, int quantity, BigDecimal price);
+    Transaction executeSellTransaction(Long portfolioId, String stockSymbol, int quantity, BigDecimal price);
 
     /**
      * Save a transaction
@@ -90,7 +90,7 @@ public interface TransactionService {
      * Delete a transaction
      * @param id The transaction ID
      */
-    void deleteTransaction(int id);
+    void deleteTransaction(Long id);
 
     /**
      * Validate a transaction
@@ -101,5 +101,5 @@ public interface TransactionService {
      * @param transactionType The transaction type (BUY or SELL)
      * @return true if valid, false otherwise
      */
-    boolean validateTransaction(int portfolioId, String stockSymbol, int quantity, BigDecimal price, String transactionType);
+    boolean validateTransaction(Long portfolioId, String stockSymbol, int quantity, BigDecimal price, String transactionType);
 }

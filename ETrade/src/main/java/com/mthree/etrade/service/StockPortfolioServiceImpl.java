@@ -1,4 +1,3 @@
-
 package com.mthree.etrade.service;
 
 import com.mthree.etrade.dao.PortfolioDAO;
@@ -79,6 +78,7 @@ public class StockPortfolioServiceImpl implements StockPortfolioService {
 
     @Override
     public boolean existsByPortfolioAndStock(Long portfolioId, String stockSymbol) {
+        // Fixed the incomplete method
         return stockPortfolioDao.findByPortfolio_PortfolioIdAndStock_Symbol(portfolioId, stockSymbol).isPresent();
     }
 }

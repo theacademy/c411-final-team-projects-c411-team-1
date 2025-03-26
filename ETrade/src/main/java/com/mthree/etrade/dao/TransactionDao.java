@@ -13,12 +13,12 @@ import java.util.List;
  * Data Access Object interface for Transaction entity using Spring Data JPA
  */
 @Repository
-public interface TransactionDao extends JpaRepository<Transaction, Integer> {
+public interface TransactionDao extends JpaRepository<Transaction, Long> {
 
     /**
      * Find transactions by portfolio ID
      */
-    List<Transaction> findByPortfolioPortfolioId(int portfolioId);
+    List<Transaction> findByPortfolioPortfolioId(Long portfolioId);
 
     /**
      * Find transactions by stock symbol
@@ -37,12 +37,13 @@ public interface TransactionDao extends JpaRepository<Transaction, Integer> {
 
     /**
      * Find transactions by user ID (custom query)
+     * Fixed to use the correct field path
      */
     @Query("SELECT t FROM Transaction t WHERE t.portfolio.user.id = :userId")
-    List<Transaction> findByUserId(@Param("userId") int userId);
+    List<Transaction> findByUserId(@Param("userId") Long userId);
 
     /**
      * Find transactions by portfolio ID and stock symbol
      */
-    List<Transaction> findByPortfolioPortfolioIdAndStockSymbol(int portfolioId, String stockSymbol);
+    List<Transaction> findByPortfolioPortfolioIdAndStockSymbol(Long portfolioId, String stockSymbol);
 }

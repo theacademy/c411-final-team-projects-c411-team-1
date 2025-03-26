@@ -39,7 +39,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Transaction findById(int id) {
+    public Transaction findById(Long id) {
         return transactionDAO.findById(id)
                 .orElse(null);
     }
@@ -50,14 +50,12 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<Transaction> findByPortfolioId(int portfolioId) {
+    public List<Transaction> findByPortfolioId(Long portfolioId) {
         return transactionDAO.findByPortfolioPortfolioId(portfolioId);
     }
 
     @Override
-    public List<Transaction> findByUserId(int userId) {
-        // Since TransactionDao's findByUserId expects an int but our userId is an int,
-        // we can call it directly
+    public List<Transaction> findByUserId(Long userId) {
         return transactionDAO.findByUserId(userId);
     }
 
@@ -78,14 +76,14 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional
-    public Transaction executeBuyTransaction(int portfolioId, String stockSymbol, int quantity, BigDecimal price) {
+    public Transaction executeBuyTransaction(Long portfolioId, String stockSymbol, int quantity, BigDecimal price) {
         // Validate the transaction
         if (!validateTransaction(portfolioId, stockSymbol, quantity, price, "BUY")) {
             throw new IllegalArgumentException("Invalid transaction parameters");
         }
 
         // Get portfolio and stock
-        Optional<Portfolio> optionalPortfolio = portfolioDAO.findById((long) portfolioId);
+        Optional<Portfolio> optionalPortfolio = portfolioDAO.findById(portfolioId);
         Optional<Stock> optionalStock = stockDAO.findById(stockSymbol);
 
         if (optionalPortfolio.isEmpty() || optionalStock.isEmpty()) {
@@ -128,14 +126,14 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional
-    public Transaction executeSellTransaction(int portfolioId, String stockSymbol, int quantity, BigDecimal price) {
+    public Transaction executeSellTransaction(Long portfolioId, String stockSymbol, int quantity, BigDecimal price) {
         // Validate the transaction
         if (!validateTransaction(portfolioId, stockSymbol, quantity, price, "SELL")) {
             throw new IllegalArgumentException("Invalid transaction parameters");
         }
 
         // Get portfolio and stock
-        Optional<Portfolio> optionalPortfolio = portfolioDAO.findById((long) portfolioId);
+        Optional<Portfolio> optionalPortfolio = portfolioDAO.findById(portfolioId);
         Optional<Stock> optionalStock = stockDAO.findById(stockSymbol);
 
         if (optionalPortfolio.isEmpty() || optionalStock.isEmpty()) {
@@ -186,12 +184,12 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional
-    public void deleteTransaction(int id) {
+    public void deleteTransaction(Long id) {
         transactionDAO.deleteById(id);
     }
 
     @Override
-    public boolean validateTransaction(int portfolioId, String stockSymbol, int quantity, BigDecimal price, String transactionType) {
+    public boolean validateTransaction(Long portfolioId, String stockSymbol, int quantity, BigDecimal price, String transactionType) {
         // Basic validation
         if (portfolioId <= 0 || stockSymbol == null || stockSymbol.isEmpty() ||
                 quantity <= 0 || price == null || price.compareTo(BigDecimal.ZERO) <= 0 ||
@@ -200,7 +198,7 @@ public class TransactionServiceImpl implements TransactionService {
         }
 
         // Check if portfolio and stock exist
-        Optional<Portfolio> optionalPortfolio = portfolioDAO.findById((long) portfolioId);
+        Optional<Portfolio> optionalPortfolio = portfolioDAO.findById(portfolioId);
         Optional<Stock> optionalStock = stockDAO.findById(stockSymbol);
 
         if (optionalPortfolio.isEmpty() || optionalStock.isEmpty()) {
