@@ -19,23 +19,28 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    //Get a user by their ID
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
+    //Get a list of all users
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
+    //Create a new user
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
         return new ResponseEntity<>(userService.saveUser(user), HttpStatus.CREATED);
     }
 
-    //added comments
 
+    /*
+    * Update an existing user
+    */
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
         User existingUser = userService.getUserById(id);
@@ -46,12 +51,14 @@ public class UserController {
         return ResponseEntity.ok(userService.saveUser(existingUser));
     }
 
+    //Delete a user by their ID.
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUserById(id);
         return ResponseEntity.noContent().build();
     }
 
+    //Get a user by their email address.
     @GetMapping("/email/{email}")
     public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
         Optional<User> user = userService.findByEmail(email);
@@ -59,11 +66,13 @@ public class UserController {
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
+    //Get a user by their email address.
     @GetMapping("/exists/{email}")
     public ResponseEntity<Boolean> checkUserExists(@PathVariable String email) {
         return ResponseEntity.ok(userService.existsByEmail(email));
     }
 
+    //Check if a user exists by email.
     @PutMapping("/{id}/update-balance")
     public ResponseEntity<Void> updateBalance(@PathVariable Long id, @RequestParam BigDecimal amount) {
         userService.updateBalance(id, amount);
