@@ -7,13 +7,8 @@ import java.util.Objects;
 @Entity
 @Table(name = "users")
 public class User {
-
-<<<<<<< HEAD
-    @Id    @GeneratedValue(strategy = GenerationType.IDENTITY)
-=======
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
->>>>>>> 0fd29cfcfe645450506d2d10b369770485476414
     private int id;
 
     @Column(nullable = false, length = 50)
@@ -68,12 +63,8 @@ public class User {
         this.balance = balance;
     }
 
-<<<<<<< HEAD
-    @Override    public String toString() {
-=======
     @Override
     public String toString() {
->>>>>>> 0fd29cfcfe645450506d2d10b369770485476414
         return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
@@ -94,8 +85,4 @@ public class User {
     public int hashCode() {
         return Objects.hash(id, name, email, password, balance);
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 0fd29cfcfe645450506d2d10b369770485476414
