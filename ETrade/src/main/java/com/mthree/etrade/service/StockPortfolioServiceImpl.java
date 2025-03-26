@@ -1,7 +1,7 @@
 
 package com.mthree.etrade.service;
 
-import com.mthree.etrade.dao.PortfolioDAO;
+import com.mthree.etrade.dao.PortfolioDao;
 import com.mthree.etrade.dao.StockPortfolioDao;
 import com.mthree.etrade.model.Portfolio;
 import com.mthree.etrade.model.StockPortfolio;
@@ -20,7 +20,7 @@ public class StockPortfolioServiceImpl implements StockPortfolioService {
     private StockPortfolioDao stockPortfolioDao;
 
     @Autowired
-    private PortfolioDAO portfolioDAO;
+    private PortfolioDao portfolioDAO;
 
     @Override
     public StockPortfolio addStockToPortfolio(StockPortfolio stockPortfolio) {
