@@ -12,14 +12,17 @@ import java.util.Optional;
 public interface StockPortfolioDao extends JpaRepository<StockPortfolio, StockPortfolioId> {
 
     // Find all stock entries for a specific portfolio
-    List<StockPortfolio> findByPortfolio_PortfolioId(Long portfolioId);
+    List<StockPortfolio> findById_PortfolioId(Long portfolioId);
+
+    // Find all stock entries for a user via nested relationship
+    List<StockPortfolio> findByPortfolio_User_Id(Long userId);
 
     // Find a specific stock entry by portfolio and stock
-    Optional<StockPortfolio> findByPortfolio_PortfolioIdAndStock_Symbol(Long portfolioId, String symbol);
+    Optional<StockPortfolio> findById_PortfolioIdAndId_StockSymbol(Long portfolioId, String stockSymbol);
 
     // Delete a specific stock from a portfolio
-    void deleteByPortfolio_PortfolioIdAndStock_Symbol(Long portfolioId, String symbol);
+    void deleteById_PortfolioIdAndId_StockSymbol(Long portfolioId, String stockSymbol);
 
     // Optional: Get all entries by stock
-    List<StockPortfolio> findByStock_Symbol(String symbol);
+    List<StockPortfolio> findById_StockSymbol(String stockSymbol);
 }
