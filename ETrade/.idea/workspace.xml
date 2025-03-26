@@ -5,22 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5139d339-19ce-4e0c-9b20-5b288e24addc" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/controller/PortfolioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/controller/PortfolioController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/controller/StockController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/controller/StockController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/controller/StockPortfolioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/controller/StockPortfolioController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/dao/PortfolioDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/dao/PortfolioDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/dao/StockPortfolioDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/dao/StockPortfolioDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/model/Portfolio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/model/Portfolio.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/model/StockPortfolio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/model/StockPortfolio.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/model/StockPrice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/model/StockPrice.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/model/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/model/Transaction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/model/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/service/PortfolioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/service/PortfolioService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/service/PortfolioServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/service/PortfolioServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/service/StockPortfolioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/service/StockPortfolioService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/service/StockService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/service/StockService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/service/StockServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/service/StockServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/controller/UserController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
