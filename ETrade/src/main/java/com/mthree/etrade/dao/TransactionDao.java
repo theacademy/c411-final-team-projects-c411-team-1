@@ -13,7 +13,7 @@ import java.util.List;
  * Data Access Object interface for Transaction entity using Spring Data JPA
  */
 @Repository
-public interface TransactionDAO extends JpaRepository<Transaction, Integer> {
+public interface TransactionDao extends JpaRepository<Transaction, Integer> {
 
     /**
      * Find transactions by portfolio ID
