@@ -23,5 +23,15 @@ public class UserController {
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getUserById(id));
     }
-    
+
+    @GetMapping
+    public ResponseEntity<List<User>> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
+    }
+
+    @PostMapping
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        return new ResponseEntity<>(userService.saveUser(user), HttpStatus.CREATED);
+    }
+
 }
