@@ -4,12 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a2649110-d43a-487e-94ac-a8e2cf884c05" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/dao/UserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/dao/UserDao.java" afterDir="false" />
+    <list default="true" id="5139d339-19ce-4e0c-9b20-5b288e24addc" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/controller/PortfolioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/controller/PortfolioController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/controller/StockController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/controller/StockController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/controller/StockPortfolioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/controller/StockPortfolioController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/dao/PortfolioDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/dao/PortfolioDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/dao/StockPortfolioDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/dao/StockPortfolioDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/model/Portfolio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/model/Portfolio.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/model/StockPortfolio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/model/StockPortfolio.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/model/StockPrice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/model/StockPrice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/model/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/model/Transaction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/service/PortfolioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/service/PortfolioService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/service/PortfolioServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/service/PortfolioServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/service/StockPortfolioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/service/StockPortfolioService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/service/StockService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/service/StockService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/service/StockServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mthree/etrade/service/StockServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,39 +30,42 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "AymanMansoor"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;AymanMansoor&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/theacademy/c411-final-team-projects-c411-team-1.git",
-    "accountId": "976b0b8d-d9e5-48aa-9578-42611ab81fe3"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/theacademy/c411-final-team-projects-c411-team-1.git&quot;,
+    &quot;accountId&quot;: &quot;976b0b8d-d9e5-48aa-9578-42611ab81fe3&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 1
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="2uorhmPUcFaR7xE8twF1iOpORNq" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/ixah/Desktop/Team 1 - Final Proj/ETrade"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/ixah/Desktop/Team 1 - Final Proj/ETrade&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="a2649110-d43a-487e-94ac-a8e2cf884c05" name="Changes" comment="" />
+      <changelist id="5139d339-19ce-4e0c-9b20-5b288e24addc" name="Changes" comment="" />
       <created>1742925889812</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
