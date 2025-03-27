@@ -5,17 +5,17 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@IdClass(StockPortfolioId.class)
 @Table(name = "stock_portfolio")
+@IdClass(StockPortfolioId.class)
 public class StockPortfolio {
 
     @Id
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "portfolio_id", nullable = false)
     private Portfolio portfolio;
 
     @Id
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "stock_symbol", nullable = false)
     private Stock stock;
 
@@ -39,7 +39,6 @@ public class StockPortfolio {
         this.avgBuyPrice = avgBuyPrice;
         this.lastUpdated = LocalDateTime.now();
     }
-
 
     @PreUpdate
     public void preUpdate() {
