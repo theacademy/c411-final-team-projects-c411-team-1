@@ -14,12 +14,10 @@ import java.util.Optional;
 public class StockPortfolioServiceImpl implements StockPortfolioService {
 
     private final StockPortfolioDao stockPortfolioDao;
-    private final PortfolioDao portfolioDAO;
 
     @Autowired
     public StockPortfolioServiceImpl(StockPortfolioDao stockPortfolioDao, PortfolioDao portfolioDAO) {
         this.stockPortfolioDao = stockPortfolioDao;
-        this.portfolioDAO = portfolioDAO;
     }
 
     @Override
