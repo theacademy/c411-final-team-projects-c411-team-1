@@ -3,9 +3,11 @@ package com.mthree.etrade.dao;
 import com.mthree.etrade.model.StockPortfolio;
 import com.mthree.etrade.model.StockPortfolioId;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +28,8 @@ public interface StockPortfolioDao extends JpaRepository<StockPortfolio, StockPo
     Optional<StockPortfolio> findByPortfolioIdAndStockSymbol(@Param("portfolioId") Long portfolioId, @Param("stockSymbol") String stockSymbol);
 
     // Delete a specific stock from a portfolio
+    @Transactional
+    @Modifying
     @Query("delete from StockPortfolio sp where sp.portfolio.portfolioId = :portfolioId and sp.stock.symbol = :stockSymbol")
     void deleteByPortfolioIdAndStockSymbol(@Param("portfolioId") Long portfolioId, @Param("stockSymbol") String stockSymbol);
 

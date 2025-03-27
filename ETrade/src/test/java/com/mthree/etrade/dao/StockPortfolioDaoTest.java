@@ -2,6 +2,7 @@ package com.mthree.etrade.dao;
 
 import com.mthree.etrade.TestApplicationConfiguration;
 import com.mthree.etrade.model.*;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,13 +38,15 @@ public class StockPortfolioDaoTest {
     private Portfolio portfolio;
     private Stock stock;
     private StockPortfolio stockPortfolio;
+    private User user;
 
     @BeforeEach
     void setUp() {
-        User user = new User();
+        user = new User();
         user.setName("Test User");
         user.setEmail("test@example.com");
         user.setPassword("password");
+        user.setBalance(new BigDecimal("500"));
         user = userDAO.save(user);
 
         portfolio = new Portfolio();
@@ -69,18 +72,24 @@ public class StockPortfolioDaoTest {
         stockPortfolioDao.save(stockPortfolio);
     }
 
-
+    @AfterEach
+    void tearDown() {
+        stockPortfolioDao.deleteByPortfolioIdAndStockSymbol(portfolio.getPortfolioId(), stock.getSymbol());
+        stockDAO.deleteById(stock.getSymbol());
+        portfolioDAO.deleteById(portfolio.getPortfolioId());
+        userDAO.deleteById(user.getId());
+    }
 
     @Test
     void testFindByPortfolioId() {
-        List<StockPortfolio> result = stockPortfolioDao.findById_PortfolioId(portfolio.getPortfolioId());
+        List<StockPortfolio> result = stockPortfolioDao.findByPortfolioId(portfolio.getPortfolioId());
         assertFalse(result.isEmpty());
         assertEquals(1, result.size());
     }
 
     @Test
     void testFindByUserId() {
-        List<StockPortfolio> result = stockPortfolioDao.findByPortfolio_User_Id(portfolio.getUser().getId());
+        List<StockPortfolio> result = stockPortfolioDao.findByPortfolioUserId(portfolio.getUser().getId());
         assertFalse(result.isEmpty());
     }
 
@@ -94,14 +103,14 @@ public class StockPortfolioDaoTest {
 
     @Test
     void testDeleteByCompositeId() {
-        stockPortfolioDao.deleteById_PortfolioIdAndId_StockSymbol(portfolio.getPortfolioId(), stock.getSymbol());
-        List<StockPortfolio> result = stockPortfolioDao.findById_PortfolioId(portfolio.getPortfolioId());
+        stockPortfolioDao.deleteByPortfolioIdAndStockSymbol(portfolio.getPortfolioId(), stock.getSymbol());
+        List<StockPortfolio> result = stockPortfolioDao.findByPortfolioId(portfolio.getPortfolioId());
         assertTrue(result.isEmpty());
     }
 
     @Test
     void testFindByStockSymbol() {
-        List<StockPortfolio> result = stockPortfolioDao.findById_StockSymbol(stock.getSymbol());
+        List<StockPortfolio> result = stockPortfolioDao.findByStockSymbol(stock.getSymbol());
         assertFalse(result.isEmpty());
     }
 
