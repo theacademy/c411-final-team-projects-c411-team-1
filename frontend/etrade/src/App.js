@@ -3,9 +3,9 @@ import { Route, Routes } from 'react-router-dom';
 import StockSearch from './Components/StockSearch';
 import Home from './Components/Home';
 import Stocks from './Components/Stocks'
-import PortfolioList from './Components/PortfolioList';
+import Portfolio from './Components/Portfolio';
 import PortfolioDetails from './Components/PortfolioDetails';
-import AddPortfolioForm from './Components/AddPortfolioForm';
+import AddPortfolio from './Components/AddPortfolio';
 
 function App() {
   return (
@@ -14,8 +14,8 @@ function App() {
         <Route path='/' element={<Home/>} />
         {/* <Route path='/StockSearch' element={<StockSearch/>} /> */}
         <Route path='/Stocks' element={<Stocks />} />
-        <Route path='/portfolios' element={<PortfolioList />} />
-        <Route path='/portfolios/add' element={<AddPortfolioForm />} />
+        <Route path='/portfolios' element={<Portfolio />} />
+        <Route path='/portfolios/add' element={<AddPortfolio />} />
         <Route path='/portfolios/:id' element={<PortfolioDetails />} />
       </Routes>
     </div>
