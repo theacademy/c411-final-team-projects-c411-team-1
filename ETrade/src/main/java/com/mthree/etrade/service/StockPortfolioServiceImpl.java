@@ -6,7 +6,9 @@ import com.mthree.etrade.model.StockPortfolio;
 import com.mthree.etrade.model.StockPortfolioId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,16 +28,17 @@ public class StockPortfolioServiceImpl implements StockPortfolioService {
     }
 
     @Override
-    public StockPortfolio updateStockInPortfolio(StockPortfolioId id, StockPortfolio stockPortfolio) {
-        Optional<StockPortfolio> existing = stockPortfolioDao.findById(id);
-        if (existing.isPresent()) {
-            StockPortfolio toUpdate = existing.get();
-            toUpdate.setQuantity(stockPortfolio.getQuantity());
-            toUpdate.setAvgBuyPrice(stockPortfolio.getAvgBuyPrice());
-            return stockPortfolioDao.save(toUpdate);
-        } else {
-            throw new IllegalArgumentException("StockPortfolio not found for update");
-        }
+    @Transactional
+    public StockPortfolio updateStockInPortfolio(StockPortfolioId id, StockPortfolio updatedData) {
+        StockPortfolio existing = stockPortfolioDao.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("StockPortfolio not found for update"));
+
+        // Only update mutable fields (do not touch ID-related references)
+        existing.setQuantity(updatedData.getQuantity());
+        existing.setAvgBuyPrice(updatedData.getAvgBuyPrice());
+        existing.setLastUpdated(LocalDateTime.now());
+
+        return stockPortfolioDao.save(existing);
     }
 
     @Override
