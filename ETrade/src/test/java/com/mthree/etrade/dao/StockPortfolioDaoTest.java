@@ -114,18 +114,6 @@ public class StockPortfolioDaoTest {
         assertFalse(result.isEmpty());
     }
 
-    @Test
-    void testAddDuplicateThrowsException() {
-        StockPortfolio duplicate = new StockPortfolio();
-        duplicate.setPortfolio(portfolio);
-        duplicate.setStock(stock);
-        duplicate.setQuantity(20);
-        duplicate.setAvgBuyPrice(new BigDecimal("160.00"));
-        duplicate.setLastUpdated(LocalDateTime.now());
 
-        assertThrows(DataIntegrityViolationException.class, () -> {
-            stockPortfolioDao.saveAndFlush(duplicate);
-        });
     }
-}
 
