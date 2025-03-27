@@ -7,7 +7,6 @@ import com.mthree.etrade.model.StockPortfolioId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,12 +53,12 @@ public class StockPortfolioServiceImpl implements StockPortfolioService {
 
     @Override
     public List<StockPortfolio> getStocksByPortfolioId(Long portfolioId) {
-        return stockPortfolioDao.findById_PortfolioId(portfolioId);
+        return stockPortfolioDao.findByPortfolioId(portfolioId);
     }
 
     @Override
     public List<StockPortfolio> getPortfolioByUserId(Long userId) {
-        return stockPortfolioDao.findByPortfolio_User_Id(userId);
+        return stockPortfolioDao.findByPortfolioUserId(userId);
     }
 
     @Override
@@ -77,6 +76,6 @@ public class StockPortfolioServiceImpl implements StockPortfolioService {
 
     @Override
     public boolean existsByPortfolioAndStock(Long portfolioId, String stockSymbol) {
-        return stockPortfolioDao.findById_PortfolioIdAndId_StockSymbol(portfolioId, stockSymbol).isPresent();
+        return stockPortfolioDao.findByPortfolioIdAndStockSymbol(portfolioId, stockSymbol).isPresent();
     }
 }

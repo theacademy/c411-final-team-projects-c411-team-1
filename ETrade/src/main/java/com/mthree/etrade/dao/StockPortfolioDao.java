@@ -3,6 +3,8 @@ package com.mthree.etrade.dao;
 import com.mthree.etrade.model.StockPortfolio;
 import com.mthree.etrade.model.StockPortfolioId;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,17 +14,22 @@ import java.util.Optional;
 public interface StockPortfolioDao extends JpaRepository<StockPortfolio, StockPortfolioId> {
 
     // Find all stock entries for a specific portfolio
-    List<StockPortfolio> findById_PortfolioId(Long portfolioId);
+    @Query("Select sp from StockPortfolio sp where sp.portfolio.portfolioId = :portfolioId")
+    List<StockPortfolio> findByPortfolioId(@Param("portfolioId") Long portfolioId);
 
     // Find all stock entries for a user via nested relationship
-    List<StockPortfolio> findByPortfolio_User_Id(Long userId);
+    @Query("Select sp from StockPortfolio sp where sp.portfolio.user.id = :userId")
+    List<StockPortfolio> findByPortfolioUserId(@Param("userId") Long userId);
 
     // Find a specific stock entry by portfolio and stock
-    Optional<StockPortfolio> findById_PortfolioIdAndId_StockSymbol(Long portfolioId, String stockSymbol);
+    @Query("Select sp from StockPortfolio sp where sp.portfolio.portfolioId = :portfolioId and sp.stock.symbol = :stockSymbol")
+    Optional<StockPortfolio> findByPortfolioIdAndStockSymbol(@Param("portfolioId") Long portfolioId, @Param("stockSymbol") String stockSymbol);
 
     // Delete a specific stock from a portfolio
-    void deleteById_PortfolioIdAndId_StockSymbol(Long portfolioId, String stockSymbol);
+    @Query("delete from StockPortfolio sp where sp.portfolio.portfolioId = :portfolioId and sp.stock.symbol = :stockSymbol")
+    void deleteByPortfolioIdAndStockSymbol(@Param("portfolioId") Long portfolioId, @Param("stockSymbol") String stockSymbol);
 
     // Optional: Get all entries by stock
-    List<StockPortfolio> findById_StockSymbol(String stockSymbol);
+    @Query("Select sp from StockPortfolio sp where sp.stock.symbol = :stockSymbol")
+    List<StockPortfolio> findByStockSymbol(@Param("stockSymbol") String stockSymbol);
 }
