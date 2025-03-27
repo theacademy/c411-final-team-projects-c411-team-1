@@ -34,6 +34,27 @@ public class StockServiceImpl implements StockService{
     }
 
     @Override
+    public void updateStock(Stock stock) {
+        stockDao.save(stock);
+    }
+
+    @Override
+    public void addStock(Stock stock) {
+        stockDao.save(stock);
+    }
+
+    @Override
+    public void deleteStock(String symbol) {
+        //check if stock exists before trying to delete
+        Stock stock = stockDao.findById(symbol).orElse(null);
+        if(stock == null) {
+            return;
+        }
+
+        stockDao.deleteById(symbol);
+    }
+
+    @Override
     public List<Stock> searchStock(String keyword) {
         String searchStockUri = apiUri + "SYMBOL_SEARCH&keywords=" + keyword +
                 "&apikey=" + apiKey;
@@ -41,8 +62,13 @@ public class StockServiceImpl implements StockService{
         List<Stock> retrievedStocks = new ArrayList<>();
 
         //gets hashmap response from api and creates a list of that hashmap results
-        HashMap<Object, Object> bestMatches = restTemplate.getForObject(searchStockUri, HashMap.class);
+        HashMap<String, Object> bestMatches = restTemplate.getForObject(searchStockUri, HashMap.class);
         List<HashMap<String, String>> stockList = (List<HashMap<String, String>>) bestMatches.get("bestMatches");
+
+        //tests if api limit for key has been reached
+        if(bestMatches.get("Information") != null) {
+            throw new APILimitReachException("API limit of 25 calls per day has been reached.");
+        }
 
         //goes through list of resulting stock information and creates individual stock objects to return in list format
         for(Object stockObject : stockList) {
@@ -67,25 +93,19 @@ public class StockServiceImpl implements StockService{
         HashMap<String, HashMap<String, String>> stockInfo = restTemplate.getForObject(getPriceUri, HashMap.class);
         HashMap<String, String> globalQuote = stockInfo.get("Global Quote");
 
-        //gets price from returned hashmap and stores in price variable
-        price = new BigDecimal(globalQuote.get("05. price"));
+        //tests if api limit for key has been reached
+        if(stockInfo.get("Information") != null) {
+            throw new APILimitReachException("API limit of 25 calls per day has been reached.");
+        }
+
+        try {
+            //gets price from returned hashmap and stores in price variable
+            price = new BigDecimal(globalQuote.get("05. price"));
+        } catch (Exception ex) {    //if not able to parse or nothing in global quote then return null for price
+            return null;
+        }
 
         return price;
-    }
-
-    @Override
-    public void updateStock(Stock stock) {
-        stockDao.save(stock);
-    }
-
-    @Override
-    public void addStock(Stock stock) {
-        stockDao.save(stock);
-    }
-
-    @Override
-    public void deleteStock(String symbol) {
-        stockDao.deleteById(symbol);
     }
 
     @Override
@@ -98,12 +118,21 @@ public class StockServiceImpl implements StockService{
         HashMap<String, Object> data = restTemplate.getForObject(stockHistoryUri, HashMap.class);
         HashMap<String, HashMap<String, String>> timeSeries = (HashMap<String, HashMap<String, String>>) data.get("Time Series (Daily)");
 
+        //tests if api limit for key has been reached
+        if(data.get("Information") != null) {
+            throw new APILimitReachException("API limit of 25 calls per day has been reached.");
+        }
+
+        //if stock cant be found, return null to indicate to controller
+        if(data.get("Error Message") != null) {
+            return null;
+        }
+
         Set<String> dates = timeSeries.keySet();
 
+        //goes through the data of dates retrieved from the api call and filters them out based on date, adds not filtered ones to stockHistory list
         for(String d : dates) {
             LocalDate currentDate = LocalDate.parse(d);
-            // FIXED: Updated the comparison to correctly include both startDate and endDate
-            // Using compareTo() >= 0 and <= 0 instead of isAfter/isBefore which are exclusive
             if(currentDate.compareTo(startDate) >= 0 && currentDate.compareTo(endDate) <= 0) {
                 HashMap<String, String> stockDate = timeSeries.get(d);
                 StockPrice stockPrice = new StockPrice();
