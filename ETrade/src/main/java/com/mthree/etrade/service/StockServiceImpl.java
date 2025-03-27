@@ -22,6 +22,8 @@ public class StockServiceImpl implements StockService{
 
     final String apiUri = "https://www.alphavantage.co/query?function=";
     final String apiKey = "X6N1ESY3V8OZSDJN";
+//    final String backupApiKey = "LWEUUQLHSGC08HJJ";
+//    final String backupApiKey2 ="UEAUBTP7WIJ9RKPE";
 
     @Override
     public Stock getStock(String symbol) {

@@ -164,32 +164,32 @@ class StockServiceImplTest {
                             Run these test when api limit is reached
      ************************************************************************************************/
 
-    @Test
-    void testSearchStockAPILimitReached() {
-        String keyword = "Apple";
-
-        assertThrows(
-                APILimitReachException.class,
-                () -> stockService.searchStock(keyword),
-                "Expect search stock to throw API limit exception but didn't"
-        );
-    }
-
-    @Test
-    void testGetCurrentPriceAPILimitReached() {
-        assertThrows(
-                APILimitReachException.class,
-                () -> stockService.getCurrentPrice("AAPL"),
-                "Expect get Price to throw API limit exception but didn't"
-        );
-    }
-
-    @Test
-    void testGetStockHistoryAPILimitReached() {
-        assertThrows(
-                APILimitReachException.class,
-                () -> stockService.getStockHistory("AAPL", LocalDate.parse("2025-03-03"), LocalDate.parse("2025-03-07")),
-                "Expect search stock to throw API limit exception but didn't"
-        );
-    }
+//    @Test
+//    void testSearchStockAPILimitReached() {
+//        String keyword = "Apple";
+//
+//        assertThrows(
+//                APILimitReachException.class,
+//                () -> stockService.searchStock(keyword),
+//                "Expect search stock to throw API limit exception but didn't"
+//        );
+//    }
+//
+//    @Test
+//    void testGetCurrentPriceAPILimitReached() {
+//        assertThrows(
+//                APILimitReachException.class,
+//                () -> stockService.getCurrentPrice("AAPL"),
+//                "Expect get Price to throw API limit exception but didn't"
+//        );
+//    }
+//
+//    @Test
+//    void testGetStockHistoryAPILimitReached() {
+//        assertThrows(
+//                APILimitReachException.class,
+//                () -> stockService.getStockHistory("AAPL", LocalDate.parse("2025-03-03"), LocalDate.parse("2025-03-07")),
+//                "Expect search stock to throw API limit exception but didn't"
+//        );
+//    }
 }
