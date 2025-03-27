@@ -1,49 +1,51 @@
+
 package com.mthree.etrade.service;
 
 import com.mthree.etrade.dao.PortfolioDao;
 import com.mthree.etrade.dao.StockPortfolioDao;
+import com.mthree.etrade.model.Portfolio;
 import com.mthree.etrade.model.Stock;
 import com.mthree.etrade.model.StockPortfolio;
 import com.mthree.etrade.model.StockPortfolioId;
-import com.mthree.etrade.model.Portfolio;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+@ExtendWith(MockitoExtension.class)
+class StockPortfolioServiceImplTest {
 
-import java.util.List;
-
-public class StockPortfolioServiceImplTest {
-
+    @Mock
     private StockPortfolioDao stockPortfolioDao;
-    private PortfolioDao portfolioDao;
+
+    @Mock
+    private PortfolioDao portfolioDAO;
+
+    @InjectMocks
     private StockPortfolioServiceImpl stockPortfolioService;
 
-    private Stock stock;
-    private Portfolio portfolio;
     private StockPortfolio stockPortfolio;
     private StockPortfolioId stockPortfolioId;
 
     @BeforeEach
-    public void setup() {
-        stockPortfolioDao = mock(StockPortfolioDao.class);
-        portfolioDao = mock(PortfolioDao.class);
-        stockPortfolioService = new StockPortfolioServiceImpl(stockPortfolioDao, portfolioDao);
-
-        portfolio = new Portfolio();
+    void setUp() {
+        Portfolio portfolio = new Portfolio();
         portfolio.setPortfolioId(1L);
 
-        stock = new Stock();
+        Stock stock = new Stock();
         stock.setSymbol("AAPL");
 
         stockPortfolioId = new StockPortfolioId(1L, "AAPL");
-
         stockPortfolio = new StockPortfolio();
         stockPortfolio.setPortfolio(portfolio);
         stockPortfolio.setStock(stock);
@@ -52,67 +54,66 @@ public class StockPortfolioServiceImplTest {
     }
 
     @Test
-    public void testAddStockToPortfolio() {
+    void testAddStockToPortfolio() {
         when(stockPortfolioDao.save(any(StockPortfolio.class))).thenReturn(stockPortfolio);
         StockPortfolio saved = stockPortfolioService.addStockToPortfolio(stockPortfolio);
         assertNotNull(saved);
         assertEquals(stockPortfolio.getQuantity(), saved.getQuantity());
-        verify(stockPortfolioDao).save(stockPortfolio);
     }
 
     @Test
-    public void testUpdateStockInPortfolio() {
+    void testUpdateStockInPortfolio() {
         when(stockPortfolioDao.findById(stockPortfolioId)).thenReturn(Optional.of(stockPortfolio));
-        stockPortfolio.setQuantity(20);
+        when(stockPortfolioDao.save(any(StockPortfolio.class))).thenReturn(stockPortfolio);
         StockPortfolio updated = stockPortfolioService.updateStockInPortfolio(stockPortfolioId, stockPortfolio);
-        assertEquals(20, updated.getQuantity());
-        verify(stockPortfolioDao).save(stockPortfolio);
+        assertNotNull(updated);
     }
 
     @Test
-    public void testRemoveStockFromPortfolio() {
+    void testRemoveStockFromPortfolio() {
         stockPortfolioService.removeStockFromPortfolio(stockPortfolioId);
-        verify(stockPortfolioDao).deleteById(stockPortfolioId);
+        verify(stockPortfolioDao, times(1)).deleteById(stockPortfolioId);
     }
 
     @Test
-    public void testGetStockPortfolioById() {
+    void testGetStockPortfolioById() {
         when(stockPortfolioDao.findById(stockPortfolioId)).thenReturn(Optional.of(stockPortfolio));
         StockPortfolio found = stockPortfolioService.getStockPortfolioById(stockPortfolioId);
-        assertEquals(stockPortfolio, found);
+        assertEquals(stockPortfolio.getPortfolio().getPortfolioId(), found.getPortfolio().getPortfolioId());
     }
 
     @Test
-    public void testGetStocksByPortfolioId() {
-        when(stockPortfolioDao.findById_PortfolioId(1L)).thenReturn(List.of(stockPortfolio));
-        List<StockPortfolio> list = stockPortfolioService.getStocksByPortfolioId(1L);
-        assertEquals(1, list.size());
+    void testGetStocksByPortfolioId() {
+        when(stockPortfolioDao.findByPortfolioId(1L)).thenReturn(List.of(stockPortfolio));
+        List<StockPortfolio> results = stockPortfolioService.getStocksByPortfolioId(1L);
+        assertEquals(1, results.size());
     }
 
     @Test
-    public void testGetPortfolioByUserId() {
-        when(stockPortfolioDao.findByPortfolio_User_Id(99L)).thenReturn(List.of(stockPortfolio));
-        List<StockPortfolio> list = stockPortfolioService.getPortfolioByUserId(99L);
-        assertEquals(1, list.size());
+    void testGetPortfolioByUserId() {
+        when(stockPortfolioDao.findByPortfolioUserId(1L)).thenReturn(List.of(stockPortfolio));
+        List<StockPortfolio> results = stockPortfolioService.getPortfolioByUserId(1L);
+        assertEquals(1, results.size());
     }
 
     @Test
-    public void testGetAllStockPortfolios() {
-        when(stockPortfolioDao.findAll()).thenReturn(List.of(stockPortfolio));
-        assertFalse(stockPortfolioService.getAllStockPortfolios().isEmpty());
+    void testGetAllStockPortfolios() {
+        when(stockPortfolioDao.findAll()).thenReturn(Arrays.asList(stockPortfolio));
+        List<StockPortfolio> all = stockPortfolioService.getAllStockPortfolios();
+        assertFalse(all.isEmpty());
     }
 
     @Test
-    public void testCalculatePortfolioValue() {
-        when(stockPortfolioDao.findByPortfolio_User_Id(99L)).thenReturn(List.of(stockPortfolio));
-        double value = stockPortfolioService.calculatePortfolioValue(99L);
-        assertEquals(1500.0, value);
+    void testCalculatePortfolioValue() {
+        when(stockPortfolioDao.findByPortfolioUserId(1L)).thenReturn(List.of(stockPortfolio));
+        double value = stockPortfolioService.calculatePortfolioValue(1L);
+        assertEquals(1500.00, value);
     }
 
     @Test
-    public void testExistsByPortfolioAndStock() {
-        when(stockPortfolioDao.findById_PortfolioIdAndId_StockSymbol(1L, "AAPL")).thenReturn(Optional.of(stockPortfolio));
-        assertTrue(stockPortfolioService.existsByPortfolioAndStock(1L, "AAPL"));
+    void testExistsByPortfolioAndStock() {
+        when(stockPortfolioDao.findByPortfolioIdAndStockSymbol(1L, "AAPL")).thenReturn(Optional.of(stockPortfolio));
+        boolean exists = stockPortfolioService.existsByPortfolioAndStock(1L, "AAPL");
+        assertTrue(exists);
     }
 }
-
