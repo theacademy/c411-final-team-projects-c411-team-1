@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.math.BigDecimal;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
@@ -30,6 +32,7 @@ public class UserDaoTest {
         user.setName("Test User");
         user.setEmail("testuser@example.com");
         user.setPassword("password123");
+        user.setBalance(new BigDecimal("1000"));
         user = userDao.save(user);
 
         User retrievedUser = userDao.findById(user.getId()).orElse(null);
@@ -43,6 +46,7 @@ public class UserDaoTest {
         user.setName("Old Name");
         user.setEmail("oldemail@example.com");
         user.setPassword("password123");
+        user.setBalance(new BigDecimal("1000"));
         user = userDao.save(user);
 
         // Update the user's details
@@ -60,6 +64,7 @@ public class UserDaoTest {
         user.setName("Delete Me");
         user.setEmail("delete@example.com");
         user.setPassword("password123");
+        user.setBalance(new BigDecimal("1000"));
         user = userDao.save(user);
 
         // Ensure user exists before deletion
