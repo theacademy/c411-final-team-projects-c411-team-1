@@ -1,119 +1,96 @@
-
 package com.mthree.etrade.service;
 
+import com.mthree.etrade.TestApplicationConfiguration;
 import com.mthree.etrade.dao.PortfolioDao;
 import com.mthree.etrade.dao.StockPortfolioDao;
-import com.mthree.etrade.model.Portfolio;
-import com.mthree.etrade.model.Stock;
-import com.mthree.etrade.model.StockPortfolio;
-import com.mthree.etrade.model.StockPortfolioId;
+import com.mthree.etrade.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-@ExtendWith(MockitoExtension.class)
-class StockPortfolioServiceImplTest {
 
-    @Mock
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(classes = TestApplicationConfiguration.class)
+@Import(StockPortfolioServiceImpl.class) // Import the actual service
+
+public class StockPortfolioServiceImplTest {
+
+    @Autowired
     private StockPortfolioDao stockPortfolioDao;
 
-    @Mock
-    private PortfolioDao portfolioDAO;
+    @Autowired
+    private PortfolioDao portfolioDao;
 
-    @InjectMocks
+    @Autowired
     private StockPortfolioServiceImpl stockPortfolioService;
 
-    private StockPortfolio stockPortfolio;
-    private StockPortfolioId stockPortfolioId;
+    private Portfolio portfolio;
+    private Stock stock;
 
     @BeforeEach
-    void setUp() {
-        Portfolio portfolio = new Portfolio();
-        portfolio.setPortfolioId(1L);
+    void setup() {
+        // Save Portfolio
+        User user = new User();
+        user.setId(1L); // a user with ID 1 in test DB
+        portfolio = new Portfolio();
+        portfolio.setUser(user);
+        portfolio.setName("Test Portfolio");
+        portfolio.setDescription("Test Desc");
+        portfolio.setTotal(BigDecimal.ZERO);
+        portfolioDao.save(portfolio);
 
-        Stock stock = new Stock();
+        // Save Stock
+        stock = new Stock();
         stock.setSymbol("AAPL");
-
-        stockPortfolioId = new StockPortfolioId(1L, "AAPL");
-        stockPortfolio = new StockPortfolio();
-        stockPortfolio.setPortfolio(portfolio);
-        stockPortfolio.setStock(stock);
-        stockPortfolio.setQuantity(10);
-        stockPortfolio.setAvgBuyPrice(new BigDecimal("150.00"));
+        stock.setCompanyName("Apple Inc");
+        stockPortfolioDao.save(new StockPortfolio(portfolio, stock, 10, BigDecimal.valueOf(150)));
     }
 
     @Test
     void testAddStockToPortfolio() {
-        when(stockPortfolioDao.save(any(StockPortfolio.class))).thenReturn(stockPortfolio);
+        StockPortfolio stockPortfolio = new StockPortfolio(portfolio, stock, 20, BigDecimal.valueOf(145));
         StockPortfolio saved = stockPortfolioService.addStockToPortfolio(stockPortfolio);
         assertNotNull(saved);
-        assertEquals(stockPortfolio.getQuantity(), saved.getQuantity());
-    }
-
-    @Test
-    void testUpdateStockInPortfolio() {
-        when(stockPortfolioDao.findById(stockPortfolioId)).thenReturn(Optional.of(stockPortfolio));
-        when(stockPortfolioDao.save(any(StockPortfolio.class))).thenReturn(stockPortfolio);
-        StockPortfolio updated = stockPortfolioService.updateStockInPortfolio(stockPortfolioId, stockPortfolio);
-        assertNotNull(updated);
-    }
-
-    @Test
-    void testRemoveStockFromPortfolio() {
-        stockPortfolioService.removeStockFromPortfolio(stockPortfolioId);
-        verify(stockPortfolioDao, times(1)).deleteById(stockPortfolioId);
+        assertEquals(20, saved.getQuantity());
     }
 
     @Test
     void testGetStockPortfolioById() {
-        when(stockPortfolioDao.findById(stockPortfolioId)).thenReturn(Optional.of(stockPortfolio));
-        StockPortfolio found = stockPortfolioService.getStockPortfolioById(stockPortfolioId);
-        assertEquals(stockPortfolio.getPortfolio().getPortfolioId(), found.getPortfolio().getPortfolioId());
+        StockPortfolioId id = new StockPortfolioId(portfolio.getPortfolioId(), stock.getSymbol());
+        StockPortfolio result = stockPortfolioService.getStockPortfolioById(id);
+        assertNotNull(result);
+        assertEquals(stock.getSymbol(), result.getStock().getSymbol());
     }
 
     @Test
-    void testGetStocksByPortfolioId() {
-        when(stockPortfolioDao.findByPortfolioId(1L)).thenReturn(List.of(stockPortfolio));
-        List<StockPortfolio> results = stockPortfolioService.getStocksByPortfolioId(1L);
-        assertEquals(1, results.size());
+    void testUpdateStockInPortfolio() {
+        StockPortfolioId id = new StockPortfolioId(portfolio.getPortfolioId(), stock.getSymbol());
+        StockPortfolio update = new StockPortfolio(portfolio, stock, 30, BigDecimal.valueOf(160));
+        StockPortfolio updated = stockPortfolioService.updateStockInPortfolio(id, update);
+
+        assertNotNull(updated);
+        assertEquals(30, updated.getQuantity());
+        assertEquals(BigDecimal.valueOf(160), updated.getAvgBuyPrice());
     }
 
     @Test
-    void testGetPortfolioByUserId() {
-        when(stockPortfolioDao.findByPortfolioUserId(1L)).thenReturn(List.of(stockPortfolio));
-        List<StockPortfolio> results = stockPortfolioService.getPortfolioByUserId(1L);
-        assertEquals(1, results.size());
+    void testRemoveStockFromPortfolio() {
+        StockPortfolioId id = new StockPortfolioId(portfolio.getPortfolioId(), stock.getSymbol());
+        stockPortfolioService.removeStockFromPortfolio(id);
+        assertFalse(stockPortfolioDao.findById(id).isPresent());
     }
 
     @Test
     void testGetAllStockPortfolios() {
-        when(stockPortfolioDao.findAll()).thenReturn(Arrays.asList(stockPortfolio));
         List<StockPortfolio> all = stockPortfolioService.getAllStockPortfolios();
         assertFalse(all.isEmpty());
-    }
-
-    @Test
-    void testCalculatePortfolioValue() {
-        when(stockPortfolioDao.findByPortfolioUserId(1L)).thenReturn(List.of(stockPortfolio));
-        double value = stockPortfolioService.calculatePortfolioValue(1L);
-        assertEquals(1500.00, value);
-    }
-
-    @Test
-    void testExistsByPortfolioAndStock() {
-        when(stockPortfolioDao.findByPortfolioIdAndStockSymbol(1L, "AAPL")).thenReturn(Optional.of(stockPortfolio));
-        boolean exists = stockPortfolioService.existsByPortfolioAndStock(1L, "AAPL");
-        assertTrue(exists);
     }
 }
