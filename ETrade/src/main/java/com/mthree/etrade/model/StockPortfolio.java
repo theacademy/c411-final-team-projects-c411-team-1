@@ -40,6 +40,7 @@ public class StockPortfolio {
         this.lastUpdated = LocalDateTime.now();
     }
 
+
     @PreUpdate
     public void preUpdate() {
         this.lastUpdated = LocalDateTime.now();
