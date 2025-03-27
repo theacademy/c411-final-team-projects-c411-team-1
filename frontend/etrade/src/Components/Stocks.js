@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 function Stocks() {
 
     const [stockList, setStockList] = useState([]);
-    const [showList, setShowList] = useState(false);
     const [stockName, setStockName] = useState("");
     const [stockCompany, setStockCompany] = useState("");
 
@@ -15,12 +14,7 @@ function Stocks() {
         setStockCompany(event.target.value);
     }
 
-    //handle the button click events
-    const handleRefresh = () => {
-        setShowList(!showList)
-    }
-
-    const handleGetStocks = async() => {    //calls getStock api from backend
+    const handleRefresh = async() => {    //calls getStock api from backend
         try {
             const data = await (await fetch("http://localhost:8080/api/stocks")).json()
             setStockList(data)
@@ -37,12 +31,12 @@ function Stocks() {
                   'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    "symbol": "aaple",
-                    "companyName": "Apple Inc"
+                    "symbol": stockName,
+                    "companyName": stockCompany
                 })
               })
 
-            if(!response.created) {
+            if(!response.ok) {
                 console.log(response.status)
                 throw new Error("Error creating object ${response.status}");
             }
@@ -52,27 +46,13 @@ function Stocks() {
         }
     }
 
-    const handleConsole = () => {
-        console.log(stockList)
-        console.log(stockList[0])
-        console.log(stockList[0].companyName)
-    }
-
     return (
         <div className="flex flex-col">
             <div>
                 Test
             </div>
-            <div className='flex flex-row justify-center gap-4'>
-                <button className="" onClick={handleGetStocks}>
-                    Get All Stocks
-                </button>
-                <button className='' onClick={handleRefresh}>
-                    Refresh
-                </button>
-            </div>
-            <button className='' onClick={handleConsole}>
-                get console
+            <button className='' onClick={handleRefresh}>
+                Refresh
             </button>
             <div className='flex flex-row justify-center'>
                 <label className='flex mr-4'>Enter stock symbol</label>
@@ -97,15 +77,13 @@ function Stocks() {
                 Results
             </div>
             <div>
-                { showList && (
-                    <div className='flex flex-col'>
-                        {stockList.map((stock) => (
-                                <div>
-                                    {stock.companyName}: {stock.symbol}
-                                </div>
-                            ))}
-                    </div>
-                )}
+                <div className='flex flex-col'>
+                    {stockList.map((stock) => (
+                            <div>
+                                {stock.companyName}: {stock.symbol}
+                            </div>
+                        ))}
+                </div>
             </div>
         </div>
     );

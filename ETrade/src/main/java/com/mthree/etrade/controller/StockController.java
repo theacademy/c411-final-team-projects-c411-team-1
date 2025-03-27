@@ -47,7 +47,7 @@ public class StockController {
     @PostMapping
     public ResponseEntity<Void> addStock(@RequestBody Stock stock) {
         stockService.addStock(stock);
-        return new ResponseEntity<Void>(HttpStatus.CREATED);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{symbol}")
