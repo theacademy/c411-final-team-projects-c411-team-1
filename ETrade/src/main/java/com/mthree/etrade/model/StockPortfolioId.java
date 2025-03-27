@@ -14,6 +14,24 @@ public class StockPortfolioId implements Serializable {
         this.stock = stock;
     }
 
+    public Long getPortfolio() {
+        return portfolio;
+    }
+
+    public void setPortfolio(Long portfolio) {
+        this.portfolio = portfolio;
+    }
+
+    public String getStock() {
+        return stock;
+    }
+
+    public void setStock(String stock) {
+        this.stock = stock;
+    }
+
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

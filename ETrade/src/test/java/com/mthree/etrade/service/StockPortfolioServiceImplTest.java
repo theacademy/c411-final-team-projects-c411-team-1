@@ -115,7 +115,9 @@ public class StockPortfolioServiceImplTest {
     @Test
     void testUpdateStockInPortfolio() {
         StockPortfolioId id = new StockPortfolioId(portfolio.getPortfolioId(), stock.getSymbol());
-        StockPortfolio update = new StockPortfolio(portfolio, stock, 30, BigDecimal.valueOf(160));
+        StockPortfolio update = new StockPortfolio();
+        update.setQuantity(30);
+        update.setAvgBuyPrice(BigDecimal.valueOf(160));
         StockPortfolio updated = stockPortfolioService.updateStockInPortfolio(id, update);
 
         assertNotNull(updated);
