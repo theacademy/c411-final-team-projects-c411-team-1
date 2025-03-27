@@ -38,7 +38,7 @@ function Stocks() {
 
             if(!response.ok) {
                 console.log(response.status)
-                throw new Error("Error creating object ${response.status}");
+                throw new Error("Error adding stock");
             }
 
         } catch(err) {
@@ -48,37 +48,43 @@ function Stocks() {
 
     return (
         <div className="flex flex-col">
-            <div>
-                Test
+            <div className='mb-10'>
+                Stocks
             </div>
             <button className='' onClick={handleRefresh}>
                 Refresh
             </button>
-            <div className='flex flex-row justify-center'>
-                <label className='flex mr-4'>Enter stock symbol</label>
-                <input
-                    className='mr-4 border'
-                    placeholder='Enter stock symbol here'
-                    value={stockName}
-                    onChange={stockNameInput}
-                />
-                <label className='flex mr-4'>Enter company name</label>
-                <input
-                    className='mr-4 border'
-                    placeholder='Enter company name here'
-                    value={stockCompany}
-                    onChange={stockCompanyInput}
-                />
-                <button className='flex' onClick={handleAddStock}>
-                    add Stock
-                </button>
+            <div className='flex flex-col justify-center w-full mb-10'>
+                <label className='flex mr-4 justify-center'>Enter stock symbol</label>
+                <div className='flex justify-center'>
+                    <input
+                        className='flex border w-3/4 text-center'
+                        placeholder='Enter stock symbol here'
+                        value={stockName}
+                        onChange={stockNameInput}
+                    />
+                </div>
+                <label className='flex mr-4 justify-center'>Enter company name</label>
+                <div className='flex justify-center'>
+                    <input
+                        className='flex border w-3/4 text-center'
+                        placeholder='Enter company name here'
+                        value={stockCompany}
+                        onChange={stockCompanyInput}
+                    />
+                </div>
+                <div className='flex w-full justify-center'>
+                    <button className='flex justify-center mt-4 border w-20' onClick={handleAddStock}>
+                        add Stock
+                    </button>
+                </div>
             </div>
             <div>
                 Results
             </div>
             <div>
                 <div className='flex flex-col'>
-                    {stockList.map((stock) => (
+                    {stockList.map((stock, i) => (
                             <div>
                                 {stock.companyName}: {stock.symbol}
                             </div>
