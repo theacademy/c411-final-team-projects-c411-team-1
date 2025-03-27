@@ -19,6 +19,4 @@ public interface PortfolioDao extends JpaRepository<Portfolio, Long> {
     // Total Value Query, fixed field name to match StockPortfolio model
     @Query("SELECT SUM(sp.quantity * sp.avgBuyPrice) FROM StockPortfolio sp WHERE sp.portfolio.portfolioId = :portfolioId")
     BigDecimal getPortfolioTotalValue(@Param("portfolioId") Long portfolioId);
-
-    // Removed redundant methods that should be in StockPortfolioDao
 }
