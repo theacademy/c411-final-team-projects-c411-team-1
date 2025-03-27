@@ -20,9 +20,13 @@ public class UserDaoTest {
     @Autowired
     private UserDao userDao;
 
+    @Autowired
+    private PortfolioDao portfolioDao;
+
     @BeforeEach
     void setUp() {
         // Clean the database before each test
+        portfolioDao.deleteAll();
         userDao.deleteAll();
     }
 
