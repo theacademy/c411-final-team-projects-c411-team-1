@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import userService from '../../services/userService';
+import Loading from '../common/Loading';
+
 
 
 const Login = () => {
@@ -11,11 +13,10 @@ const Login = () => {
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const userId = 1;  //hard coded for now
-    sessionStorage.setItem('user', JSON.stringify(userId));
+    const [userId, setUserId] = useState(0);  //hard coded for now
 
     useEffect(() => {
-
+        
     }, []);
 
     const handleChange = (e) => {
@@ -40,16 +41,9 @@ const Login = () => {
             setLoading(true);
             setError(null);
 
-            // // Create user object
-            // const userData = {
-            //     name: formData.name,
-            //     email: formData.email,
-            //     password: formData.password,
-            //     balance: formData.balance
-            // };
-
-            // // Call the API to create the portfolio
-            // const createdPortfolio = await portfolioService.createPortfolio(portfolioData);
+            //gets user with certain email
+            const user = await userService.getUser(formData.email);
+            sessionStorage.setItem('user', JSON.stringify(user.id));
 
             // Navigate to the dashboard
             navigate(`/dashboard`);
@@ -59,6 +53,22 @@ const Login = () => {
             setLoading(false);
         }
     };
+
+    if (loading) return <Loading />;
+
+    if (error) {
+        return (
+            <div className="error-container">
+                <p className="error-message">{error}</p>
+                <button
+                    className="btn btn-primary"
+                    onClick={() => window.location.reload()}
+                >
+                    Retry
+                </button>
+            </div>
+        );
+    }
 
     return (
         <div className="login">

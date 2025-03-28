@@ -13,6 +13,16 @@ const userService = {
         }
     },
 
+    getUser: async (userEmail) => {
+        try {
+            const response = await apiClient.get('/api/users/email/' + userEmail);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching user:', error);
+            throw error;
+        }
+    },
+
     saveUser: async (userData) => {
         try {
             const response = await apiClient.post('/api/users', userData);

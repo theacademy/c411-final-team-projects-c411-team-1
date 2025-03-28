@@ -14,6 +14,7 @@ const Dashboard = () => {
     const [error, setError] = useState(null);
     const user = sessionStorage.getItem('user');
     const userId = user ? JSON.parse(user) : null;
+    // console.log(userId)
 
     useEffect(() => {
         const fetchDashboardData = async () => {
