@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom';
 import transactionService from '../../services/transactionService';
 import Loading from '../common/Loading';
 
-const TransactionList = ({ userId }) => {
+const TransactionList = () => {
     const [transactions, setTransactions] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const user = sessionStorage.getItem('user');
+    const userId = user ? JSON.parse(user) : null;
 
     useEffect(() => {
         const fetchTransactions = async () => {

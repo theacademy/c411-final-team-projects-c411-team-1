@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import portfolioService from '../../services/portfolioService';
 import transactionService from '../../services/transactionService';
 import stockService from '../../services/stockService';
 import Loading from '../common/Loading';
 
-const Dashboard = ({ userId }) => {
+const Dashboard = () => {
     const [portfolios, setPortfolios] = useState([]);
     const [recentTransactions, setRecentTransactions] = useState([]);
     const [portfolioPerformanceData, setPortfolioPerformanceData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const user = sessionStorage.getItem('user');
+    const userId = user ? JSON.parse(user) : null;
 
     useEffect(() => {
         const fetchDashboardData = async () => {

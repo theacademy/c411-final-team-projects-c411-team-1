@@ -189,6 +189,15 @@ a:hover {
     background-color: #f8f9fa;
 }
 
+.card-login {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    overflow: hidden;
+    width: 600px;
+}
+
 /* Form styles */
 .form-group {
     margin-bottom: 15px;
