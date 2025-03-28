@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import portfolioService from '../../services/portfolioService';
 import userService from '../../services/userService';
 
-const CreatePortfolio = ({ userId }) => {
+const CreatePortfolio = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: '',
@@ -11,6 +11,8 @@ const CreatePortfolio = ({ userId }) => {
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const user = sessionStorage.getItem('user');
+    const userId = user ? JSON.parse(user) : null;
 
     // In CreatePortfolio.js
     useEffect(() => {

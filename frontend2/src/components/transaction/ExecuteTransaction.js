@@ -5,9 +5,11 @@ import stockService from '../../services/stockService';
 import transactionService from '../../services/transactionService';
 import Loading from '../common/Loading';
 
-const ExecuteTransaction = ({ userId }) => {
+const ExecuteTransaction = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const user = sessionStorage.getItem('user');
+    const userId = user ? JSON.parse(user) : null;
 
     // Check if we have pre-filled data from navigation state
     const prefillData = location.state || {};
