@@ -75,36 +75,33 @@ const PortfolioList = ({ userId }) => {
                     {Array.isArray(portfolios) ?
                         portfolios.map((portfolio) => (
                             <div key={portfolio.portfolioId} className="card">
-                                {/* Card content */}
-                            <div className="card-header">
-                                <h3>{portfolio.name}</h3>
+                                <div className="card-header">
+                                    <h3>{portfolio.name}</h3>
+                                </div>
+                                <div className="card-body">
+                                    <p>{portfolio.description || 'No description provided.'}</p>
+                                    <p><strong>Total Value:</strong> ${parseFloat(portfolio.total).toFixed(2)}</p>
+                                    <p><strong>Created:</strong> {new Date(portfolio.createdAt).toLocaleDateString()}</p>
+                                    <p><strong>Last Updated:</strong> {new Date(portfolio.updatedAt).toLocaleDateString()}</p>
+                                </div>
+                                <div className="card-footer">
+                                    <Link
+                                        to={`/portfolios/${portfolio.portfolioId}`}
+                                        className="btn btn-secondary"
+                                    >
+                                        View Details
+                                    </Link>
+                                    <button
+                                        onClick={() => handleDeletePortfolio(portfolio.portfolioId)}
+                                        className="btn btn-danger"
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
                             </div>
-                            <div className="card-body">
-                                <p>{portfolio.description || 'No description provided.'}</p>
-                                <p><strong>Total Value:</strong> ${parseFloat(portfolio.total).toFixed(2)}</p>
-                                <p><strong>Created:</strong> {new Date(portfolio.createdAt).toLocaleDateString()}</p>
-                                <p><strong>Last Updated:</strong> {new Date(portfolio.updatedAt).toLocaleDateString()}</p>
-                            </div>
-                            <div className="card-footer">
-                                <Link
-                                    to={`/portfolios/${portfolio.portfolioId}`}
-                                    className="btn btn-secondary"
-                                >
-                                    View Details
-                                </Link>
-                                <button
-                                    onClick={() => handleDeletePortfolio(portfolio.portfolioId)}
-                                    className="btn btn-danger"
-                                >
-                                    Delete
-                                </button>
-                            </div>
-                            </div>
-                        ))
-                        :
+                        )) :
                         <p>No portfolios available</p>
                     }
-                    ))
                 </div>
             )}
         </div>
