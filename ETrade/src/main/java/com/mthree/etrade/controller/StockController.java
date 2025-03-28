@@ -3,6 +3,7 @@ package com.mthree.etrade.controller;
 import com.mthree.etrade.model.Stock;
 import com.mthree.etrade.model.StockPrice;
 import com.mthree.etrade.service.APILimitReachException;
+import com.mthree.etrade.service.InvalidDataException;
 import com.mthree.etrade.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,7 +47,11 @@ public class StockController {
 
     @PostMapping
     public ResponseEntity<Void> addStock(@RequestBody Stock stock) {
-        stockService.addStock(stock);
+        try {
+            stockService.addStock(stock);
+        } catch (InvalidDataException ex) {
+            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 

@@ -23,6 +23,27 @@ function Stocks() {
         }
     }
 
+    const handleRemoveClick = async(sN) => {
+        try {
+            const response = await fetch(('http://localhost:8080/api/stocks/' + sN), {
+                method: 'DELETE',
+                headers: {
+                  'Content-Type': 'application/json',
+                }
+              })
+
+            if(!response.ok) {
+                console.log(response.status)
+                console.log(response)
+                throw new Error("Error adding stock");
+            }
+            handleRefresh();
+
+        } catch(err) {
+            console.log(err.message)
+        }
+    }
+
     const handleAddStock = async() => {    //calls createStock api from backend
         try {
             const response = await fetch('http://localhost:8080/api/stocks', {
@@ -41,6 +62,8 @@ function Stocks() {
                 throw new Error("Error adding stock");
             }
 
+            handleRefresh();
+
         } catch(err) {
             console.log(err.message)
         }
@@ -51,9 +74,6 @@ function Stocks() {
             <div className='mb-10'>
                 Stocks
             </div>
-            <button className='' onClick={handleRefresh}>
-                Refresh
-            </button>
             <div className='flex flex-col justify-center w-full mb-10'>
                 <label className='flex mr-4 justify-center'>Enter stock symbol</label>
                 <div className='flex justify-center'>
@@ -85,9 +105,16 @@ function Stocks() {
             <div>
                 <div className='flex flex-col'>
                     {stockList.map((stock, i) => (
-                            <div>
-                                {stock.companyName}: {stock.symbol}
+                        <div className='flex w-screen justify-center mb-2'>
+                            <div className='flex justify-center w-fit'>
+                                <div className='flex rounded-lg pb-1 pl-2 pr-2 border'>
+                                    {stock.companyName}: {stock.symbol}
+                                </div>
+                                <div className='flex ml-2 mb-1'>
+                                    <button onClick={()=>handleRemoveClick(stock.symbol)} className='flex-row text-red-700 mr-4'>X</button>
+                                </div>
                             </div>
+                        </div>
                         ))}
                 </div>
             </div>

@@ -42,6 +42,9 @@ public class StockServiceImpl implements StockService{
 
     @Override
     public void addStock(Stock stock) {
+        if(stock.getSymbol().isBlank()) {
+            throw new InvalidDataException("Cannot create stock");
+        }
         stockDao.save(stock);
     }
 
