@@ -65,7 +65,21 @@ public class TransactionController {
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Transaction>> getTransactionsByUserId(@PathVariable Long userId) {
         List<Transaction> transactions = transactionService.findByUserId(userId);
-        return new ResponseEntity<>(transactions, HttpStatus.OK);
+
+        // Manually clear unnecessary nested data
+        for (Transaction transaction : transactions) {
+            if (transaction.getStock() != null) {
+                transaction.getStock().setCompanyName(null);
+            }
+            if (transaction.getPortfolio() != null) {
+                transaction.getPortfolio().setStockPortfolios(null);
+                transaction.getPortfolio().setUser(null);
+                transaction.getPortfolio().setCreatedAt(null);
+                transaction.getPortfolio().setUpdatedAt(null);
+            }
+        }
+
+        return ResponseEntity.ok(transactions);
     }
 
     /**

@@ -78,5 +78,21 @@ public class UserController {
         userService.updateBalance(id, amount);
         return ResponseEntity.ok().build();
     }
+    @PostMapping("/setup-test")
+    public ResponseEntity<?> setupTestUser() {
+        try {
+            User user = new User();
+            user.setName("Test User");
+            user.setEmail("test@example.com");
+            user.setPassword("password");
+            user.setBalance(new BigDecimal("1000.00"));
+
+            User savedUser = userService.saveUser(user);
+            return ResponseEntity.ok(savedUser);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error creating test user: " + e.getMessage());
+        }
+    }
 
 }

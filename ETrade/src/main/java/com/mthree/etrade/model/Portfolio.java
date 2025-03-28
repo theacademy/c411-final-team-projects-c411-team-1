@@ -1,5 +1,7 @@
 package com.mthree.etrade.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -39,6 +41,7 @@ public class Portfolio {
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("portfolio")
     private List<StockPortfolio> stockPortfolios;
 
     public Portfolio() {}

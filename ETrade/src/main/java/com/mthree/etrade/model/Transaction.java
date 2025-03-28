@@ -5,6 +5,14 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "transactions")
 public class Transaction {
@@ -14,12 +22,21 @@ public class Transaction {
     @Column(name = "transaction_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "stock_symbol", nullable = false)
+    @JsonIgnoreProperties({"companyName"}) // Ignore unnecessary stock details
     private Stock stock;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "portfolio_id", nullable = false)
+    @JsonIgnoreProperties({
+            "user",
+            "stockPortfolios",
+            "createdAt",
+            "updatedAt",
+            "description",
+            "total"
+    }) // Ignore deep portfolio details
     private Portfolio portfolio;
 
     @Column(name = "price", nullable = false, precision = 10, scale = 2)
