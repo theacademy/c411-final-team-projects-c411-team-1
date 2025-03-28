@@ -35,6 +35,7 @@ public class Portfolio {
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     @Column(name = "updated_at", nullable = false)

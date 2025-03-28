@@ -40,8 +40,6 @@ public class PortfolioController {
             }
 
             portfolio.setStockPortfolios(null);
-            portfolio.setCreatedAt(null);
-            portfolio.setUpdatedAt(null);
         }
 
         return ResponseEntity.ok(portfolios);

@@ -61,8 +61,6 @@ const CreatePortfolio = ({ userId }) => {
                 name: formData.name,
                 description: formData.description,
                 total: 0, // New portfolio starts with zero value
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString()
             };
 
             // Call the API to create the portfolio
