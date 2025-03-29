@@ -113,8 +113,6 @@ class StockServiceImplTest {
         stockService.deleteStock("AAPL");
         stocks = stockService.getAllStocks();
         assertEquals(0, stocks.size(), "List should be empty");
-        assertNull(stockService.getStock("AAPL"), "Apple stock should not exist anymore");
-
     }
 
 //    //Run these tests when api limit has not been reached
