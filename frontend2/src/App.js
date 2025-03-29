@@ -11,6 +11,7 @@ import StockDetail from './components/stock/StockDetail';
 import TransactionList from './components/transaction/TransactionList';
 import ExecuteTransaction from './components/transaction/ExecuteTransaction';
 import Login from './components/User/Login'
+import Logout from './components/User/Logout'
 
 function App() {
     // For demo purposes, we'll use a hardcoded user ID
@@ -23,6 +24,7 @@ function App() {
                 <main className="main-content">
                     <Routes>
                         <Route path="/" element={<Login />} />
+                        <Route path="/logout" element={<Logout />} />
                         <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/portfolios" element={<PortfolioList />} />
                         <Route path="/portfolios/new" element={<CreatePortfolio />} />

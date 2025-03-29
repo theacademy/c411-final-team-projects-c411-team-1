@@ -13,11 +13,6 @@ const Login = () => {
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [userId, setUserId] = useState(0);  //hard coded for now
-
-    useEffect(() => {
-        
-    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
