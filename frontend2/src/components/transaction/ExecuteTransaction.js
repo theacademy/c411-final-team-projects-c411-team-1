@@ -9,7 +9,7 @@ const ExecuteTransaction = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const user = sessionStorage.getItem('user');
-    const userId = user ? JSON.parse(user) : null;
+    const userId = user ? JSON.parse(user).id : null;
 
     // Check if we have pre-filled data from navigation state
     const prefillData = location.state || {};

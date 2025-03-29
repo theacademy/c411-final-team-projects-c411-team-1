@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+// In frontend2/src/components/User/Login.js
+import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import userService from '../../services/userService';
+import authService from '../../services/authService';
 import Loading from '../common/Loading';
-
-
 
 const Login = () => {
     const navigate = useNavigate();
@@ -36,14 +35,12 @@ const Login = () => {
             setLoading(true);
             setError(null);
 
-            //gets user with certain email
-            const user = await userService.getUser(formData.email);
-            sessionStorage.setItem('user', JSON.stringify(user.id));
+            await authService.login(formData.email, formData.password);
 
             // Navigate to the dashboard
-            navigate(`/dashboard`);
+            navigate('/dashboard');
         } catch (err) {
-            console.error('Error validating user:', err);
+            console.error('Error logging in:', err);
             setError('Incorrect username or password. Please try again.');
             setLoading(false);
         }
@@ -51,72 +48,61 @@ const Login = () => {
 
     if (loading) return <Loading />;
 
-    if (error) {
-        return (
-            <div className="error-container">
-                <p className="error-message">{error}</p>
-                <button
-                    className="btn btn-primary"
-                    onClick={() => window.location.reload()}
-                >
-                    Retry
-                </button>
-            </div>
-        );
-    }
-
     return (
         <div className="login">
-                    <h1>Login</h1>     
-                    <div className="login-box">
-                        <div className="card-login">
-                            <div className="card-header">
-                                <h3>Login Below</h3>
-                                <h4>Don't have an account yet? Sign Up</h4> 
+            <h1>Login</h1>
+            <div className="login-box">
+                <div className="card-login">
+                    <div className="card-header">
+                        <h3>Login Below</h3>
+                        <h4>Don't have an account yet? Sign Up</h4>
+                    </div>
+                    <div className="card-body">
+                        {error && (
+                            <div className="alert alert-danger">{error}</div>
+                        )}
+                        <form onSubmit={handleSubmit}>
+                            <div className="form-group">
+                                <label htmlFor="email" className="form-label">Email Address</label>
+                                <input
+                                    type="text"
+                                    id="email"
+                                    name="email"
+                                    className="form-control"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    placeholder="Enter email address"
+                                    required
+                                />
                             </div>
-                            <div className="card-body">
-                                <form onSubmit={handleSubmit}>
-                                    <div className="form-group">
-                                        <label htmlFor="email" className="form-label">Email Address</label>
-                                        <input
-                                            type="text"
-                                            id="email"
-                                            name="email"
-                                            className="form-control"
-                                            value={formData.email}
-                                            onChange={handleChange}
-                                            placeholder="Enter email address"
-                                            required
-                                            />
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="password" className="form-label">Password</label>
-                                        <input
-                                            type='password'
-                                            id="password"
-                                            name="password"
-                                            className="form-control"
-                                            value={formData.password}
-                                            onChange={handleChange}
-                                            placeholder="Enter password"
-                                            required
-                                            ></input>
-                                        </div>
-                                    <div className="form-actions">
-                                        <button
-                                            type="submit"
-                                            className="btn btn-primary"
-                                            disabled={loading}
-                                        >
-                                        {loading ? 'Login...' : 'Login'}
-                                        </button>
-                                        </div>
-                                </form>
+                            <div className="form-group">
+                                <label htmlFor="password" className="form-label">Password</label>
+                                <input
+                                    type='password'
+                                    id="password"
+                                    name="password"
+                                    className="form-control"
+                                    value={formData.password}
+                                    onChange={handleChange}
+                                    placeholder="Enter password"
+                                    required
+                                />
                             </div>
-                        </div>
+                            <div className="form-actions">
+                                <button
+                                    type="submit"
+                                    className="btn btn-primary"
+                                    disabled={loading}
+                                >
+                                    {loading ? 'Login...' : 'Login'}
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
+            </div>
+        </div>
     );
+};
 
-}
-export default Login
+export default Login;
