@@ -3,6 +3,7 @@ package com.mthree.etrade.service;
 import com.mthree.etrade.dao.UserDao;
 import com.mthree.etrade.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -21,6 +22,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User saveUser(User user) {
+        user.setPassword(hashPassword(user.getPassword()));
         return userDao.save(user);
     }
 
@@ -58,5 +60,9 @@ public class UserServiceImpl implements UserService {
         User user = getUserById(userId);
         user.setBalance(user.getBalance().add(amount));
         userDao.save(user);
+    }
+
+    private String hashPassword(String password) {
+        return BCrypt.hashpw(password, BCrypt.gensalt(12));
     }
 }
