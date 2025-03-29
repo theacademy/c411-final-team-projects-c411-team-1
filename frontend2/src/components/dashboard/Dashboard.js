@@ -12,7 +12,7 @@ const Dashboard = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const user = sessionStorage.getItem('user');
-    const userId = user ? JSON.parse(user) : null;
+    const userId = user ? JSON.parse(user).id : null;
 
     useEffect(() => {
         const fetchDashboardData = async () => {
