@@ -21,7 +21,7 @@ public class PortfolioServiceImpl implements PortfolioService {
 
     @Override
     public Portfolio savePortfolio(Portfolio portfolio) {
-        portfolio.setUpdatedAt(LocalDateTime.now());
+        portfolio.setUpdatedAt(LocalDateTime.now()); //try commenting out this line and running frontend again
         return portfolioDAO.save(portfolio);
     }
 
