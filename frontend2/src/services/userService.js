@@ -31,6 +31,16 @@ const userService = {
             console.error('Error creating user:', error);
             throw error;
         }
+    },
+
+    validateUser: async (userData) => {
+        try {
+            const response = await apiClient.put('/api/users/validate', userData);
+            return response.data;
+        } catch (error) {
+            console.error('Error validating user:', error);
+            throw error;
+        }
     }
 };
 

@@ -55,7 +55,11 @@ const Login = () => {
                 <div className="card-login">
                     <div className="card-header">
                         <h3>Login Below</h3>
-                        <h4>Don't have an account yet? Sign Up</h4>
+                        <h4>Don't have an account yet? 
+                            <Link to='/signup' className='login-link'>
+                                Sign Up
+                            </Link>
+                        </h4>
                     </div>
                     <div className="card-body">
                         {error && (
