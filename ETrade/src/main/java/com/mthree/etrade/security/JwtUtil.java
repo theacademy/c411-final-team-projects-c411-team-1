@@ -35,4 +35,3 @@ public class JwtUtil {
         return expiration.before(new Date());
     }
 }
-

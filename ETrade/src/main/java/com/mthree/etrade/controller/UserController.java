@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -77,6 +78,46 @@ public class UserController {
     public ResponseEntity<Void> updateBalance(@PathVariable Long id, @RequestParam BigDecimal amount) {
         userService.updateBalance(id, amount);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/setup-test")
+    public ResponseEntity<?> setupTestUser() {
+        try {
+            User user = new User();
+            user.setName("Test User");
+            user.setEmail("test@example.com");
+            user.setPassword("password");
+            user.setBalance(new BigDecimal("1000.00"));
+
+            User savedUser = userService.saveUser(user);
+            return ResponseEntity.ok(savedUser);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error creating test user: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/validate")
+    public ResponseEntity<User> validateUserInput(@RequestBody HashMap<String, String> user) {
+        User newUser = new User();
+        newUser.setName(user.get("name"));
+
+        if(user.get("email").contains("@") && user.get("email").contains(".")) {
+            newUser.setEmail(user.get("email"));
+        }
+        else {
+            return new ResponseEntity<User>(newUser, HttpStatus.BAD_REQUEST);
+        }
+
+        newUser.setPassword(user.get("password"));
+
+        try {
+            newUser.setBalance(new BigDecimal(user.get("balance")));
+        } catch (NumberFormatException ex) {
+            return new ResponseEntity<User>(newUser, HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<User>(newUser, HttpStatus.OK);
     }
 
 }

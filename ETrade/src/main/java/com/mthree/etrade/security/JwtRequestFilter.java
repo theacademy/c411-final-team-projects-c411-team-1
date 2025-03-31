@@ -26,6 +26,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain chain) throws ServletException, IOException {
+
+        // Don't try to authenticate preflight CORS requests
+        if (request.getMethod().equals("OPTIONS")) {
+            response.setStatus(HttpServletResponse.SC_OK);
+            chain.doFilter(request, response);
+            return;
+        }
+
         final String authHeader = request.getHeader("Authorization");
 
         String email = null;
@@ -33,7 +41,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             jwt = authHeader.substring(7);
-            email = jwtUtil.extractEmail(jwt);
+            try {
+                email = jwtUtil.extractEmail(jwt);
+            } catch (Exception e) {
+                // Invalid token, continue without setting authentication
+                logger.warn("Invalid JWT token: " + e.getMessage());
+            }
         }
 
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -47,7 +60,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
+
         chain.doFilter(request, response);
     }
 }
-

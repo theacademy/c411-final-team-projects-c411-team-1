@@ -30,7 +30,19 @@ public class PortfolioController {
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Portfolio>> getPortfoliosByUserId(@PathVariable Long userId) {
-        return ResponseEntity.ok(portfolioService.getPortfoliosByUserId(userId));
+        List<Portfolio> portfolios = portfolioService.getPortfoliosByUserId(userId);
+
+        for (Portfolio portfolio : portfolios) {
+            if (portfolio.getUser() != null) {
+                portfolio.getUser().setPassword(null);
+                portfolio.getUser().setBalance(null);
+                portfolio.getUser().setEmail(null);
+            }
+
+            portfolio.setStockPortfolios(null);
+        }
+
+        return ResponseEntity.ok(portfolios);
     }
 
     @PostMapping

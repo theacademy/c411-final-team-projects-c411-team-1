@@ -71,7 +71,23 @@ public class StockPortfolioController {
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<StockPortfolio>> getPortfolioByUserId(@PathVariable Long userId) {
-        return ResponseEntity.ok(stockPortfolioService.getPortfolioByUserId(userId));
+        List<StockPortfolio> stockPortfolios = stockPortfolioService.getPortfolioByUserId(userId);
+
+        for (StockPortfolio stockPortfolio : stockPortfolios) {
+            if (stockPortfolio.getPortfolio() != null) {
+                stockPortfolio.getPortfolio().setUser(null);
+                stockPortfolio.getPortfolio().setStockPortfolios(null);
+                stockPortfolio.getPortfolio().setCreatedAt(null);
+                stockPortfolio.getPortfolio().setUpdatedAt(null);
+            }
+
+            if (stockPortfolio.getStock() != null) {
+                // Clear any unnecessary stock details if needed
+                // stockPortfolio.getStock().setCompanyName(null);
+            }
+        }
+
+        return ResponseEntity.ok(stockPortfolios);
     }
 
     @GetMapping("/all")

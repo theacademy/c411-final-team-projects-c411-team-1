@@ -7,8 +7,13 @@ public class AuthRequest {
     private String email;
     private String password;
 
-    public AuthRequest(String email) {
+    // Default constructor needed for Jackson
+    public AuthRequest() {
+    }
+
+    public AuthRequest(String email, String password) {
         this.email = email;
+        this.password = password;
     }
 
     public String getEmail() {
@@ -23,6 +28,10 @@ public class AuthRequest {
         return password;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+  
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof AuthRequest)) return false;

@@ -21,13 +21,54 @@ public class StockServiceImpl implements StockService{
     private StockDao stockDao;
 
     final String apiUri = "https://www.alphavantage.co/query?function=";
-    final String apiKey = "X6N1ESY3V8OZSDJN";
-//    final String backupApiKey = "LWEUUQLHSGC08HJJ";
-//    final String backupApiKey2 ="UEAUBTP7WIJ9RKPE";
+    final String apiKey = "3AVUK1YNQ9OE5QMD";
+    final String backupApiKey = "55APIL0RDA4VTGYR";
 
     @Override
     public Stock getStock(String symbol) {
-        return stockDao.findById(symbol).orElse(null);
+        // First check the database
+        Stock stock = stockDao.findById(symbol).orElse(null);
+
+        // If not in database, try to get it from the API
+        if (stock == null) {
+            try {
+                // Use the search API to get stock details
+                String searchStockUri = apiUri + "SYMBOL_SEARCH&keywords=" + symbol +
+                        "&apikey=" + apiKey;
+                RestTemplate restTemplate = new RestTemplate();
+
+                HashMap<String, Object> response = restTemplate.getForObject(searchStockUri, HashMap.class);
+
+                // Check for API limit
+                if (response.get("Information") != null) {
+                    throw new APILimitReachException("API limit reached");
+                }
+
+                // Get best matches
+                List<HashMap<String, String>> matches = (List<HashMap<String, String>>) response.get("bestMatches");
+
+                // Find an exact match for the symbol
+                if (matches != null && !matches.isEmpty()) {
+                    for (HashMap<String, String> match : matches) {
+                        if (match.get("1. symbol").equalsIgnoreCase(symbol)) {
+                            // Create and save the stock
+                            stock = new Stock();
+                            stock.setSymbol(symbol);
+                            stock.setCompanyName(match.get("2. name"));
+                            stockDao.save(stock);
+                            break;
+                        }
+                    }
+                }
+            } catch (APILimitReachException e) {
+                throw e;
+            } catch (Exception e) {
+                // Log the error but don't throw it
+                e.printStackTrace();
+            }
+        }
+
+        return stock;
     }
 
     @Override
@@ -89,8 +130,8 @@ public class StockServiceImpl implements StockService{
 
     @Override
     public BigDecimal getCurrentPrice(String symbol) {
-        String getPriceUri = apiUri + "GLOBAL_QUOTE&symbol=" + symbol +
-                "&apikey=" + apiKey;
+        String getPriceUri = apiUri + "GLOBAL_QUOTE&symbol=" + symbol + "&apikey=" + apiKey;
+        System.out.println("Making API call to: " + getPriceUri);
         RestTemplate restTemplate = new RestTemplate();
         BigDecimal price = null;
 

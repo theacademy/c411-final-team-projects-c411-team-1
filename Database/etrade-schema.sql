@@ -45,7 +45,8 @@ create table stock_portfolio (
         references stock(stock_symbol),
 	CONSTRAINT fk_stock_portfolio_portfolio
 		foreign key (portfolio_id)
-        references portfolio(portfolio_id) );
+        references portfolio(portfolio_id)
+        ON DELETE CASCADE );
 
 create table transactions (
 	transaction_id INT auto_increment,
@@ -62,4 +63,5 @@ create table transactions (
         references stock(stock_symbol),
 	CONSTRAINT fk_transactions_portfolio
 		foreign key (portfolio_id)
-        references portfolio(portfolio_id) );
+        references portfolio(portfolio_id)
+        ON DELETE CASCADE );
